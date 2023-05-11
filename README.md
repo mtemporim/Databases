@@ -1,2 +1,2 @@
 # MySQL-Shell
-Some examples of MySQL Shelll commands 
+Some materials and examples of MySQL Shelll commands 
