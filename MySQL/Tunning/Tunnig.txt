@@ -20,12 +20,12 @@ ORDER BY QTD_Conections DESC;
 
 -- It show SQLs in execution real time 
 SELECT 
-  pl.USER AS Usuario,
-  pl.DB AS Base, 
+  pl.USER AS User,
+  pl.DB AS Database, 
   SUBSTR(pl.HOST,1,(INSTR(pl.HOST, ':')-1) ) AS `Host`, 
-  pl.COMMAND AS Comando, 
-  DATE_FORMAT (tran.trx_started, ' %h:%m:%s') AS HoraInicio,
-  pl.time AS TempoEmExecucao,
+  pl.COMMAND AS Command, 
+  DATE_FORMAT (tran.trx_started, ' %h:%m:%s') AS StartTime,
+  pl.time AS ExecutionTime,
   pl.ID AS TREAD_ID,
   tran.trx_query AS QUERY    
 FROM INFORMATION_SCHEMA.INNODB_TRX tran
