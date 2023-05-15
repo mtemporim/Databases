@@ -4,7 +4,7 @@
 
 ## Link to subject/function  
 1. [mysqldump](https://github.com/mtemporim/Databases/blob/main/MySQL/mysqldump/dump.md)
-1. [Restoring Dump](https://github.com/mtemporim/Databases/blob/main/MySQL/mysqldump/restore.txt)
+1. [Restoring Dump](https://github.com/mtemporim/Databases/blob/main/MySQL/mysqldump/restore.md)
 
 
 

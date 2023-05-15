@@ -1,6 +1,10 @@
--- Some queries that i use to tunning
+[<-- Back to Tunnig](https://github.com/mtemporim/Databases/tree/main/MySQL/Tunning)
 
--- It show quantity of connections to database 
+
+### Some queries that i use to tunning
+
+### It show quantity of connections to database 
+```
 SELECT 
   `DB`,
   -- USER,
@@ -16,9 +20,12 @@ SELECT
 FROM INFORMATION_SCHEMA.PROCESSLIST 
 GROUP BY `DB` -- , USER   -- , `USER`, `HOST` -- , `ID` , COMMAND, TIME, STATE, INFO 
 ORDER BY QTD_Conections DESC;
+```
 
 
--- It show SQLs in execution real time 
+### It show SQLs in execution real time 
+<pre>
+```
 SELECT 
   pl.USER AS User,
   pl.DB AS Database, 
@@ -30,5 +37,5 @@ SELECT
   tran.trx_query AS QUERY    
 FROM INFORMATION_SCHEMA.INNODB_TRX tran
 	JOIN INFORMATION_SCHEMA.PROCESSLIST pl ON tran.trx_mysql_thread_id = pl.ID;
-	
-
+```	
+</pre>
