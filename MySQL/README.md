@@ -1,4 +1,5 @@
-# <center>MySQL Database<center>
+# MySQL Database
+[<-- Back to Database](https://github.com/mtemporim/Databases/tree/main)
 
 ## Link to subject/function  
 1. [Dump/Restore](https://github.com/mtemporim/Databases/tree/main/MySQL/mysqldump)
