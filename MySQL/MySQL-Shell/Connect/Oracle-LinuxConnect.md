@@ -20,7 +20,13 @@
 
 ### Execute the connect string 
 
-```\connect user@192.168.0.10:3306```
+```
+
+
+\connect user@192.168.0.10:3306
+
+
+```
 
 
 ### Its possible to connect directly by Linux command line 

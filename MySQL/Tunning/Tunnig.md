@@ -24,7 +24,7 @@ ORDER BY QTD_Conections DESC;
 
 
 ### It show SQLs in execution real time 
-<pre>
+
 ```
 SELECT 
   pl.USER AS User,
@@ -38,4 +38,4 @@ SELECT
 FROM INFORMATION_SCHEMA.INNODB_TRX tran
 	JOIN INFORMATION_SCHEMA.PROCESSLIST pl ON tran.trx_mysql_thread_id = pl.ID;
 ```	
-</pre>
+
