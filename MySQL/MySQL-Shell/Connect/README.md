@@ -4,4 +4,4 @@
 [<-- Back to MySQL-Shell](https://github.com/mtemporim/Databases/tree/main/MySQL/MySQL-Shell)  
 
 ## Link to subject/function  
-1. [Oracle-LinuxConnect](https://github.com/mtemporim/Databases/blob/main/MySQL/MySQL-Shell/Install/Oracle-LinuxConnect.md)
+1. [Oracle-LinuxConnect](https://github.com/mtemporim/Databases/blob/main/MySQL/MySQL-Shell/Connect/Oracle-LinuxConnect.md)
