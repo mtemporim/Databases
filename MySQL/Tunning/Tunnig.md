@@ -4,7 +4,7 @@
 ### Some queries that i use to tunning
 
 ### It show quantity of connections to database 
-```
+```sql
 SELECT 
   `DB`,
   -- USER,
@@ -25,7 +25,7 @@ ORDER BY QTD_Conections DESC;
 
 ### It show SQLs in execution real time 
 
-```
+```sql
 SELECT 
   pl.USER AS User,
   pl.DB AS Database, 
