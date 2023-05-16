@@ -9,14 +9,14 @@ shell-js> util.loadDump("worlddump", {threads: 8, osBucketName: "hanna-bucket", 
 
 >[!IMPORTANT]
 >
-> Important: The util.loadDump library are executed in MySQL Shell by Java Script interpreter, so to acces this option type \js 
+> The util.loadDump library are executed in MySQL Shell by Java Script interpreter, so to acces this option type \js 
 
 
 >[!IMPORTANT]
 >
-> Important 2: the backup of MySQL Shell made by util.dump*, create the backup in a folder including all data and metadata in separate files, to load you is needed this entire folder
+> The backup of MySQL Shell made by util.dump*, create the backup in a folder including all data and metadata in separate files, to load you is needed this entire folder
 
-### This example load a backup of schema/database who call "MyDatabaseName" in C:\Temp with backup name "MybackupDatabaseName" into another MySQL instance
+### This example load a backup of schema/database who call "MyDatabaseName" in temporary directory with backup name "MybackupDatabaseName" into another MySQL instance
 
 ##### Windows
   ```util.loadDump("C:/Temp/MyDatabaseName/", {dryRun:false, showProgress:true, resetProgress:true, skipBinlog:true, threads:4, loadDdl:true, loadIndexes:true})```
