@@ -5,7 +5,7 @@
 
 ## It´is important to know for who never use MySQL-Shell some tips.
 
-MySQL Shell is an advanced command-line client and code editor for MySQL.
+MySQL Shell is an advanced command-line client and code editor for MySQL  
 The MySQL-Shell have three capabilities to scripting  
 * SQL 
 * JavaScript 

@@ -1,4 +1,4 @@
-[<-- Back to Install](https://github.com/mtemporim/Databases/tree/main/MySQL/MySQL-Shell/Connect)
+[<-- Back to Connect](https://github.com/mtemporim/Databases/tree/main/MySQL/MySQL-Shell/Connect)
 
 [MySQL-Shell Connections Documentation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-connections.html)
 
