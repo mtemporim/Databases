@@ -9,9 +9,7 @@
 
 
 ### Syntax 
-```bash
-\connect <user>@<IP>:<port>
-```  *On MySQL-Shell client command line 
+```\connect <user>@<IP>:<port>```  *On MySQL-Shell client command line 
 
 ```mysqlsh \c <user>@<IP>:<port>``` *On Linux commnand line
 
@@ -22,9 +20,7 @@
 
 ### Execute the connect string 
 
-```bash
-\connect user@192.168.0.10:3306
-```
+```\connect user@192.168.0.10:3306```
 
 
 ### Its possible to connect directly by Linux command line 

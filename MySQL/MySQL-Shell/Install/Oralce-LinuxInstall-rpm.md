@@ -15,7 +15,10 @@
 
 ### Move and run the file downloaded to your server, in this case the file is on /tmp directory 
 
-```rpm -ivh mysql-shell-8.0.33-1.el8.x86_64.rpm```
+```bash
+rpm -ivh mysql-shell-8.0.33-1.el8.x86_64.rpm
+```
+
 
 >[!NOTE]
 >
@@ -24,7 +27,9 @@
 
 ### Move and run the lib file downloaded to your server, in this case the file is on /tmp directory to
 
-```rpm -ivh libyaml-0.1.4-11.el7_0.x86_64.rpm```
+```bash
+rpm -ivh libyaml-0.1.4-11.el7_0.x86_64.rpm
+```
 
 
 
