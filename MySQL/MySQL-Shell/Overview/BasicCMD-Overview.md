@@ -14,15 +14,24 @@ The MySQL-Shell have three capabilities to scripting
 
 ### Call MySQL-Shell client by Linux command line 
 
-```mysqlsh```
+```bash
+mysqlsh
+```
 
 ### To scrip in SQL type 
 
-```\sql```
+```
+\sql
+```
 
 ### To scrip in SQL JavaScript type 
 
-```\js``` 
+```
+\js
+``` 
 
 ### To scrip in SQL JavaScript type 
-```\py```
+```
+\py
+```
+
