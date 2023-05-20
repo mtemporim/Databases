@@ -16,20 +16,20 @@
 
 ### Call MySQL-Shell client by Linux command line to execute connect string 
 
-```
+```bash
 mysqlsh
 ```
 
 ### Execute the connect string 
 
-```
+```bash
 \connect user@192.168.0.10:3306
 ```
 
 
 ### Its possible to connect directly by Linux command line 
 
-```
+```bash
 mysqlsh \c user@192.168.0.10:3306
 ```
 
@@ -37,28 +37,28 @@ mysqlsh \c user@192.168.0.10:3306
 ### Syntax to connect in specified script mode (Only Linux command line)
 
 #### SQL 
-```
+```bash
 \connect user@192.168.0.10:3306  --sql
 ```
 
 #### JavaScript 
-```
+```bash
 \connect user@192.168.0.10:3306  --js
 ```
 
 #### Python 
-```
+```bash
 \connect user@192.168.0.10:3306  --py
 ```
 
 
 
 ### Exit/quit MySQL-Shell client
-```
+```bash
 \q
 ``` 
 or
-```
+```bash
 \quit
 ```
 

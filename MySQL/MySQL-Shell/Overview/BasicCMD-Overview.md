@@ -20,18 +20,18 @@ mysqlsh
 
 ### To scrip in SQL type 
 
-```
+```bash
 \sql
 ```
 
 ### To scrip in SQL JavaScript type 
 
-```
+```bash
 \js
 ``` 
 
 ### To scrip in SQL JavaScript type 
-```
+```bash
 \py
 ```
 

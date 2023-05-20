@@ -4,11 +4,9 @@
 
 ### util.dumpSchemas(schemas, outputUrl[, options])  
 
-```shell-js> util.dumpSchemas(["world"], "worlddump", {
-       > "osBucketName": "hanna-bucket", "osNamespace": "idx28w1ckztq", 
-       > "ocimds": "true", "compatibility": ["strip_definers", "strip_restricted_grants"]})
-```
-
+`
+shell-js> util.dumpSchemas(["world"], "worlddump", {"osBucketName": "hanna-bucket", "osNamespace": "idx28w1ckztq","ocimds": "true", "compatibility":["strip_definers", "strip_restricted_grants"]})
+`
 
 >[!IMPORTANT]
 >

@@ -3,9 +3,10 @@
 [util.loadDump documentation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-load-dump.html)
 
 ### util.loadDump(url[, options])
-
+`
 shell-js> util.loadDump("/mnt/data/worlddump", {dryRun: true})
 shell-js> util.loadDump("worlddump", {threads: 8, osBucketName: "hanna-bucket", osNamespace: "idx28w1ckztq"})
+`
 
 >[!IMPORTANT]
 >
@@ -19,11 +20,15 @@ shell-js> util.loadDump("worlddump", {threads: 8, osBucketName: "hanna-bucket", 
 ### This example load a backup of schema/database who call "MyDatabaseName" in temporary directory with backup name "MybackupDatabaseName" into another MySQL instance
 
 ##### Windows
-  ```util.loadDump("C:/Temp/MyDatabaseName/", {dryRun:false, showProgress:true, resetProgress:true, skipBinlog:true, threads:4, loadDdl:true, loadIndexes:true})```
+  ```bash
+  util.loadDump("C:/Temp/MyDatabaseName/", {dryRun:false, showProgress:true, resetProgress:true, skipBinlog:true, threads:4, loadDdl:true, loadIndexes:true})
+  ```
 
  
  ##### Linux
- ```util.loadDump("/tmp/MyDatabaseName/", {dryRun:false, showProgress:true, resetProgress:true, skipBinlog:true, threads:4, loadDdl:true, loadIndexes:true})```
+ ```bash
+ util.loadDump("/tmp/MyDatabaseName/", {dryRun:false, showProgress:true, resetProgress:true, skipBinlog:true, threads:4, loadDdl:true, loadIndexes:true})
+ ```
  
 
 
