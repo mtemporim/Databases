@@ -4,11 +4,9 @@
 
 ### util.dumpSchemas(schemas, outputUrl[, options])  
 
-```
-shell-js> util.dumpSchemas(["world"], "worlddump", {
+```shell-js> util.dumpSchemas(["world"], "worlddump", {
        > "osBucketName": "hanna-bucket", "osNamespace": "idx28w1ckztq", 
-       > "ocimds": "true", "compatibility": ["strip_definers", "strip_restricted_grants"]})
-```
+       > "ocimds": "true", "compatibility": ["strip_definers", "strip_restricted_grants"]})```
 
 
 >[!IMPORTANT]
@@ -23,10 +21,14 @@ shell-js> util.dumpSchemas(["world"], "worlddump", {
 ### This example create a backup of schema/database who call "MyDatabaseName" in temporary directory with backup name "MybackupDatabaseName", compressed using 4 thread, each thread is one cpu core
 
 ##### Windows
-```util.dumpSchemas(["MyDatabaseName"], "C:/Temp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})```
+```
+util.dumpSchemas(["MyDatabaseName"], "C:/Temp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})
+```
 
 ##### Linux
-```util.dumpSchemas(["MyDatabaseName"], "/tmp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})``` 
+```bash
+util.dumpSchemas(["MyDatabaseName"], "/tmp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})
+``` 
 
 
 
