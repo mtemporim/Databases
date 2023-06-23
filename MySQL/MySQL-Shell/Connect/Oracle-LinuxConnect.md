@@ -34,7 +34,7 @@ mysqlsh \c user@192.168.0.10:3306
 ```
 
 
-### Syntax to connect in specified script mode (Only Linux command line)
+### Syntax to connect in specified script mode (only Linux command line)
 
 #### SQL 
 ```bash
