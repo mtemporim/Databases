@@ -63,10 +63,6 @@ show variables like 'local_infile';
 +---------------+-------+ 
 ```
 
-*This variable controls server-side LOCAL capability for LOAD DATA statements. Depending on the local_infile setting, the server refuses or permits local data loading by clients that have LOCAL enabled on the client side.*
-
-[local_infile Documentation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-load-dump.html](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)
-
 ### Or it can be made by my.cnf/my.inf file
 
 Then add:
@@ -78,5 +74,8 @@ local-infile
 local-infile 
 
 
+*This variable controls server-side LOCAL capability for LOAD DATA statements. Depending on the local_infile setting, the server refuses or permits local data loading by clients that have LOCAL enabled on the client side.*
+
+[local_infile Documentation](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)
 
 
