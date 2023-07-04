@@ -39,34 +39,43 @@ shell-js> util.loadDump("worlddump", {threads: 8, osBucketName: "hanna-bucket", 
 ```sql
 show variables like 'local_infile';
 ```
+```sql
 +---------------+-------+ 
 | Variable_name | Value | 
 +---------------+-------+ 
 | local_infile  | OFF   | 
 +---------------+-------+ 
+```
 
 
 ### It enable the variable "local_infile"
 ```sql
 set global local_infile=1;
 ```
-
 ```sql
 show variables like 'local_infile';
 ```
+```sql
 +---------------+-------+ 
 | Variable_name | Value | 
 +---------------+-------+ 
 | local_infile  | ON    | 
 +---------------+-------+ 
-
+```
 
 *This variable controls server-side LOCAL capability for LOAD DATA statements. Depending on the local_infile setting, the server refuses or permits local data loading by clients that have LOCAL enabled on the client side.*
 
-[local_infile Documentation]([https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-load-dump.html](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)
+[local_infile Documentation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-load-dump.html](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_local_infile)
 
+### Or it can be made by my.cnf/my.inf file
 
+Then add:
 
+[mysqld]
+local-infile 
+
+[mysql]
+local-infile 
 
 
 
