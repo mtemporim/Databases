@@ -31,4 +31,35 @@ shell-js> util.loadDump("worlddump", {threads: 8, osBucketName: "hanna-bucket", 
  ```
  
 
+>[!IMPORTANT]
+>
+> if you run the command and show the following message *ERROR: The 'local_infile' global system variable must be set to ON in the target server, after the server is verified to be trusted.* You should access the RDBMS and run the following commands:
+
+### This command show status of "local_infile" variable
+```sql
+show variables like 'local_infile';
+```
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| local_infile  | OFF   |
++---------------+-------+
+
+
+### It enable the variable "local_infile"
+```sql
+set global local_infile=1;
+```
+
+```sql
+show variables like 'local_infile';
+```
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| local_infile  | ON    |
++---------------+-------+
+
+
+
 
