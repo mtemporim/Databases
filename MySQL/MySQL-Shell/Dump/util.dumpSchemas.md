@@ -21,12 +21,12 @@ shell-js> util.dumpSchemas(["world"], "worlddump", {"osBucketName": "hanna-bucke
 
 ##### Windows
 ```
-util.dumpSchemas(["MyDatabaseName"], "C:/Temp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})
+util.dumpSchemas(["MyDatabaseName"], "C:/Temp/MybackupDatabaseName/", {showProgress:true, consistent:false, compression:"zstd", threads:4})
 ```
 
 ##### Linux
 ```bash
-util.dumpSchemas(["MyDatabaseName"], "/tmp/MybackupDatabaseName/", {dryRun:false, showProgress:true, consistent:false, compression:"zstd", threads:4})
+util.dumpSchemas(["MyDatabaseName"], "/tmp/MybackupDatabaseName/", {showProgress:true, consistent:false, compression:"zstd", threads:4})
 ``` 
 
 
