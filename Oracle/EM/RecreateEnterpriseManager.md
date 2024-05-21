@@ -1,13 +1,31 @@
 
-Tutorial para recriar emctl
 
 
--> Stop DB Console
+Theres some case that we have to recreate the enterprime manager, like after a backup restore, import etc..  
 
+How to recreate de Enterprise Manager 
+
+>[!NOTE]
+>
+>This process must be done with the oracle user on the operating system "su - oracle"
+
+
+**View DB Console status**
+```bash
 emctl status dbconsole
+```
+**View agent status**
+```bash
 emctl status agent
+```
+**Stop DB Console**
+```bash
 emctl stop dbconsole
+```
+**Stop agent**
+```bash
 emctl stop agent
+```
 
 -> Check db timezone and SO timezone
 
