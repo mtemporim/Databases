@@ -111,6 +111,11 @@ Exit sqlplus
 ```bash
 emca -deconfig dbcontrol db -repos drop
 ```
+**Remove the OEM folder on ORACLE_HOME**
+```bash
+rm -rf $ORACLE_HOME/nodename_dbuniquename
+```
+
 >[!IMPORTANT]
 >
 >Reference:

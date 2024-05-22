@@ -49,75 +49,44 @@ SELECT DBTIMEZONE FROM DUAL;
 ALTER DATABASE SET TIME_ZONE='-03:00';
 ```
 
+Exit of sqlplus
 
+>[!IMPORTANT]
+>
+>Be sure that the OEM was unnistalled and DBControl removed
 
-
--> Check spfile
-cat $ORACLE_HOME/dbs/spfilesigrh.ora
--> Check pfile
+**Check pfile**
+```bash
 cat $ORACLE_HOME/dbs/initsigrh.ora
--> Check env
-vim .bash_profile
--> Check listener
+```
+**check environment variables**
+```bash
+env
+```
+**Check listener**
+```bash
 cat  $ORACLE_HOME/network/admin/listener.ora
--> Check tnsnames
+```
+**Check tnsnames**
+```bashs
 cat  $ORACLE_HOME/network/admin/tnsnames.ora
--> Edit hostname
-vim /etc/hostname
+```
+**Check hostname**
+```bash
+hostname
+```
+>[!CAUTION]
+>
+>Make sure the listener is working ok, the environment variables, hostname
 
-
--> Drop Enterprise Manager
-$ sqlplus / as sysdba
-exec DBMS_AQADM.DROP_QUEUE_TABLE(queue_table=>'SYSMAN.MGMT_NOTIFY_QTABLE',force=>TRUE);
-SHUTDOWN IMMEDIATE;
-
-STARTUP RESTRICT;
-
-DECLARE
-CURSOR c1 IS
-SELECT owner, synonym_name name
-FROM dba_synonyms
-WHERE table_owner = 'SYSMAN';
-BEGIN
-FOR r1 IN c1
-LOOP
-IF r1.owner = 'PUBLIC' THEN
-EXECUTE IMMEDIATE 'DROP PUBLIC SYNONYM '||r1.name;
-ELSE
-EXECUTE IMMEDIATE 'DROP SYNONYM '||r1.owner||'.'||r1.name;
-END IF;
-END LOOP;
-END;
-/
-
-set pages 10
-set head off
-set lines 300
-spool drop.sql
-select 'drop public synonym '||object_name||';'
-from dba_objects
-where object_name like '%MGMT%'
-and status = 'INVALID';
-
-DROP ROLE mgmt_user;
-DROP user mgmt_view cascade;
-drop public synonym MGMT_TARGET_BLACKOUTS;
-drop public synonym SETEMVIEWUSERCONTEXT;
-
-ALTER SYSTEM DISABLE RESTRICTED SESSION;
-
-$ rm -rf $ORACLE_HOME/nodename_dbuniquename
-$ rm -rf $ORACLE_HOME/nodename_dbuniquename
-
--> Not mandatory deconfig dbcontrol
-## emca -deconfig dbcontrol db -repos drop
-
-
--> recreate repository
+**Recreate repository**
+```bash
 emca -config all db -repos recreate -DBCONTROL_HTTP_PORT 5500
+```
 
-Database SID: &DATABASESID
-Central agent home: &LITERAL_ORACLE_HOME_PATH (echo $ORACLE_HOME)
+Database SID: <$ORACLE_SID>  -- Must be insert $ORACLE_SID value  ```bash echo $ORACLE_SID```
+Central agent home: <$ORACLE_HOME> -- Must be insert $ORACLE_HOME value
+
 
 -> start and stop dbconsole
 emctl start dbconsole

@@ -4,4 +4,4 @@
 ## Link to subject/function  
 1. [Creating DBConsole Repository]()
 1. [Manual Remove DBConsole Repository](https://github.com/mtemporim/Databases/blob/main/Oracle/EM/ManualRemoveDbConsoleRepository.md)
-1. [Recreating DBConsole Repository]()
+1. [Recreating DBConsole Repository](https://github.com/mtemporim/Databases/blob/main/Oracle/EM/RecreateEnterpriseManager.md)
