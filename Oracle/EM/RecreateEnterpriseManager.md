@@ -110,7 +110,7 @@ emctl stop dbconsole
 
 
 -> edit emd.properties
-vim $ORACLE_HOME/nodename_dbuniquename/sysman/config/emd.properties
+vi $ORACLE_HOME/nodename_dbuniquename/sysman/config/emd.properties
 ## Change timezone: eg.: agentTZRegion=Brazil/East or agentTZRegion=US/Eastern
 
 -> start dbconsole
