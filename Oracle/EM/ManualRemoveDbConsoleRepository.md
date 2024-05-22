@@ -106,7 +106,11 @@ DROP user sysman cascade;
 ```sql  
 ALTER SYSTEM DISABLE RESTRICTED SESSION;
 ```
-
+Exit sqlplus  
+**Drop existing dbcontrol**
+```bash
+emca -deconfig dbcontrol db -repos drop
+```
 >[!IMPORTANT]
 >
 >Reference:
