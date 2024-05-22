@@ -32,14 +32,11 @@ emctl stop agent
 ```bash
 sqlplus / as sysdba 
 ```
-
 **In sqlplus Execute DBMS_AQADM.DROP_QUEUE_TABLE Procedure.**
 ```sql
-exec DBMS_AQADM.DROP_QUEUE_TABLE(
-       queue_table=>'SYSMAN.MGMT_NOTIFY_QTABLE',
-       force=>TRUE);
+exec DBMS_AQADM.DROP_QUEUE_TABLE(queue_table=>'SYSMAN.MGMT_NOTIFY_QTABLE',force=>TRUE);
 ```
-**Next step should be droped the sysman account and management objects.**  
+## Next step should be droped the sysman account and management objects.
 **Still in **sqlplus**, shutdown Oracle instance.** 
 ```sql
 SHUTDOWN IMMEDIATE;
@@ -48,6 +45,12 @@ SHUTDOWN IMMEDIATE;
 ```sql
 STARTUP RESTRICT;
 ```
-
+**Execute sysman.emd_maintenance.remove_em_dbms_jobs procedures**
+```sql
+EXEC sysman.emd_maintenance.remove_em_dbms_jobs;
+```
+>[!NOTE]
+>
+>**sysman.emd_maintenance.remove_em_dbms_jobs** It is a procedure to remove jobs from the database that have been scheduled by Oracle Enterprise Manager.
 
 
