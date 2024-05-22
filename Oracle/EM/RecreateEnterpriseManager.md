@@ -10,6 +10,12 @@ How to recreate de Enterprise Manager
 >This process must be done with the oracle user on the operating system "su - oracle"
 
 
+
+>[!TIP]
+>
+>Be sure that the OEM was unnistalled.
+
+
 **View DB Console status**
 ```bash
 emctl status dbconsole
@@ -26,15 +32,24 @@ emctl stop dbconsole
 ```bash
 emctl stop agent
 ```
-
--> Check db timezone and SO timezone
-
-$ timedatectl
-
-$ sqlplus / as sysdba
+**Check db timezone and SO timezone**
+```bash
+timedatectl
+```
+**On shell, open sqlplus.**
+```bash
+sqlplus / as sysdba 
+```
+**In sqlplus check the DBTimezone.**
+```sql
 SELECT DBTIMEZONE FROM DUAL;
+```
+**If need, change DBTimezone(in my case Brazil UTC) 
+```SQL
+ALTER DATABASE SET TIME_ZONE='-03:00';
+```
 
-alter database set time_zone='-03:00';
+
 
 
 -> Check spfile
