@@ -8,14 +8,6 @@ How to recreate de Enterprise Manager
 >[!NOTE]
 >
 >This process must be done with the oracle user on the operating system "su - oracle"
-
-
-
->[!TIP]
->
->Be sure that the OEM was unnistalled.
-
-
 **View DB Console status**
 ```bash
 emctl status dbconsole
@@ -84,8 +76,9 @@ hostname
 emca -config all db -repos recreate -DBCONTROL_HTTP_PORT 5500
 ```
 
-Database SID: <$ORACLE_SID>  -- Must be insert $ORACLE_SID value  ```bash echo $ORACLE_SID```
-Central agent home: <$ORACLE_HOME> -- Must be insert $ORACLE_HOME value
+Database SID: <$ORACLE_SID>  -- Must be insert $ORACLE_SID value ```bash echo $ORACLE_SID```  
+Central agent home: <$ORACLE_HOME> -- Must be insert $ORACLE_HOME value ```bash echo $ORACLE_SID```  
+
 
 
 -> start and stop dbconsole
