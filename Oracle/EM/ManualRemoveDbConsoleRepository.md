@@ -10,26 +10,41 @@ How to do this?
 >[!NOTE]
 >
 >This process must be done with the oracle user on the operating system "su - oracle"
+ 
 
-
-On **shell**, open sqlplus* 
+**View DB Console status.**
+```bash
+emctl status dbconsole
+```
+**View agent status.**
+```bash
+emctl status agent
+```
+**Stop DB Console.**
+```bash
+emctl stop dbconsole
+```
+**Stop agent.**
+```bash
+emctl stop agent
+```
+**On shell, open sqlplus.**
 ```bash
 sqlplus / as sysdba 
 ```
 
-In **sqlplus** Execute DBMS_AQADM.DROP_QUEUE_TABLE Procedure 
+**In sqlplus Execute DBMS_AQADM.DROP_QUEUE_TABLE Procedure.**
 ```sql
 exec DBMS_AQADM.DROP_QUEUE_TABLE(
        queue_table=>'SYSMAN.MGMT_NOTIFY_QTABLE',
        force=>TRUE);
 ```
-
-Next step should be droped the sysman account and management objects
-Still in **sqlplus**, shutdown Oracle instance 
+**Next step should be droped the sysman account and management objects.**  
+**Still in **sqlplus**, shutdown Oracle instance.** 
 ```sql
 SHUTDOWN IMMEDIATE;
 ```
-Start Oracle instance on restrict mode 
+**Start Oracle instance on restrict mode.** 
 ```sql
 STARTUP RESTRICT;
 ```
