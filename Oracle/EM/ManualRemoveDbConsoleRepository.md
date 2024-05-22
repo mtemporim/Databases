@@ -36,6 +36,10 @@ sqlplus / as sysdba
 ```sql
 exec DBMS_AQADM.DROP_QUEUE_TABLE(queue_table=>'SYSMAN.MGMT_NOTIFY_QTABLE',force=>TRUE);
 ```
+>[!NOTE]
+>
+>**DBMS_AQADM.DROP_QUEUE_TABLE*** This procedure drops an existing queue table. All the queues in a queue table must be stopped and dropped before the queue table can be dropped
+
 ## Next step should be droped the sysman account and management objects.
 **Still in **sqlplus**, shutdown Oracle instance.** 
 ```sql
