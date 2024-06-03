@@ -69,6 +69,12 @@ mysqlsh user@localhost:3306
 mysqlsh user@127.0.0.1:3306
 ```
 
+
+### Syntax to connect by socket (only Linux command line)
+```bash
+mysqlsh user@192.168.0.10:3306 --socket=/var/run/mysqld/mysql.sock
+```
+
 ### Exit/quit MySQL-Shell client
 ```bash
 \q
