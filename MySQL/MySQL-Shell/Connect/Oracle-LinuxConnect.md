@@ -11,7 +11,7 @@
 ### Syntax 
 ```\connect <user>@<IP>:<port>```  *On MySQL-Shell client command line 
 
-```mysqlsh \c <user>@<IP>:<port>``` *On Linux commnand line
+```mysqlsh \c <user>@<IP>:<port>``` *On Linux commnand line (bash)
 
 
 ### Call MySQL-Shell client by Linux command line to execute connect string 
@@ -25,15 +25,6 @@ mysqlsh
 ```bash
 \connect user@192.168.0.10:3306
 ```
-
-
-### Its possible to connect directly by Linux command line 
-
-```bash
-mysqlsh \c user@192.168.0.10:3306
-```
-
-
 ### Syntax to connect in specified script mode (only Linux command line)
 
 #### SQL 
@@ -41,15 +32,35 @@ mysqlsh \c user@192.168.0.10:3306
 \connect user@192.168.0.10:3306  --sql
 ```
 
+### Syntax to connect in localhost
+
+#### Localhost
+```bash
+\connect user@localhost:3306
+```
+
+#### 127.0.0.1
+```bash
+\connect user@127.0.0.1:3306
+```
+
+### Syntax to connect in specified script mode (only Linux command line) directly by Linux Shell  
+#### SQL  
+```bash
+mysqlsh \c user@192.168.0.10:3306 --sql
+```
+
 #### JavaScript 
 ```bash
-\connect user@192.168.0.10:3306  --js
+mysqlsh \c user@192.168.0.10:3306 --js
 ```
 
 #### Python 
 ```bash
-\connect user@192.168.0.10:3306  --py
+mysqlsh \c user@192.168.0.10:3306 --py
 ```
+
+
 
 
 
@@ -61,6 +72,9 @@ or
 ```bash
 \quit
 ```
+
+
+
 
 
 >[!IMPORTANT]
