@@ -77,12 +77,7 @@ or
 ```bash
 \quit
 ```
-
-
-
-
-
 >[!IMPORTANT]
 >
-> Exists some details on MySQL-Shell that be observed to who don't have worked with it yeat [BasicCMD-Overview](https://github.com/mtemporim/Databases/blob/main/MySQL/MySQL-Shell/Overview/BasicCMD-Overview.md)
+> Exists some details on MySQL-Shell that be observed to who don't have worked with it yeat [Basic CMD-Overview](https://github.com/mtemporim/Databases/blob/main/MySQL/MySQL-Shell/Overview/BasicCMD-Overview.md)
 
