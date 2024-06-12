@@ -115,16 +115,7 @@ emca -deconfig dbcontrol db -repos drop
 ```bash
 rm -rf $ORACLE_HOME/nodename_dbuniquename
 ```
-
->[!IMPORTANT]
->
->Reference:
->Master Note for Enterprise Manager Configuration Assistant (EMCA) in Single Instance Database Environment [**ID 1099271.1**]
-
-
 >[!IMPORTANT]
 >
 >Reference:
 >Master Note for Enterprise Manager Configuration Assistant (EMCA) in Single Instance Database Environment [**ID 1099271.1**](https://support.oracle.com/epmos/faces/DocumentDisplay?id=1099271.1)
-
-
