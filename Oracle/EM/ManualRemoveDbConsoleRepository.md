@@ -120,3 +120,14 @@ rm -rf $ORACLE_HOME/nodename_dbuniquename
 >
 >Reference:
 >Master Note for Enterprise Manager Configuration Assistant (EMCA) in Single Instance Database Environment [**ID 1099271.1**]
+
+
+>[!IMPORTANT]
+>
+>Reference:
+>Master Note for Enterprise Manager Configuration Assistant (EMCA) in Single Instance Database Environment [**ID 1099271.1**](https://support.oracle.com/epmos/faces/DocumentDisplay?_afrLoop=313038933441909&id=1099271.1&_afrWindowMode=0&_adf.ctrl-state=dcox30m4t_108)
+
+
+
+
+https://support.oracle.com/epmos/faces/DocumentDisplay?_afrLoop=313038933441909&id=1099271.1&_afrWindowMode=0&_adf.ctrl-state=dcox30m4t_108
