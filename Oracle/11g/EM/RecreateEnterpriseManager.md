@@ -1,4 +1,4 @@
-[<-- Back to Enterprise Manager](https://github.com/mtemporim/Databases/blob/main/Oracle/EM/README.md)  
+[<-- Back to Enterprise Manager](https://github.com/mtemporim/Databases/blob/main/Oracle/11g/EM/RecreateEnterpriseManager.md)
 
 
 Theres some case that we have to recreate the enterprime manager, like after a backup restore, import etc..  
