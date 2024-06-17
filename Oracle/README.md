@@ -1,4 +1,4 @@
-# Oracle Database Version
+# Oracle Database Versions
 [<-- Back to Databases](https://github.com/mtemporim/Databases/tree/main)
 
 ## Link to subject/function  
