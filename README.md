@@ -3,6 +3,7 @@
 ## Some materials and examples of databases that are being explored and applied.  
 1. [MySQL](https://github.com/mtemporim/Databases/tree/main/MySQL)
 1. [Oracle](https://github.com/mtemporim/Databases/tree/main/Oracle)
+1. [SQL Server](https://github.com/mtemporim/Databases/tree/main/SQL%20Server)
 
 
 

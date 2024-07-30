@@ -7,4 +7,4 @@
 1. [2016]()
 1. [2017]()
 1. [2019]()
-1. [2022]()
+1. [2022](https://github.com/mtemporim/Databases/tree/main/SQL%20Server/2022)
