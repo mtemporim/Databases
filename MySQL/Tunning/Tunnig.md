@@ -7,14 +7,16 @@
 ```sql
 SELECT
 	USER AS User,
-	DB AS `Schema`,
-	COUNT(pl.id) AS Sessions
+	COALESCE(DB, 'NA') AS `Schema`,
+	COUNT(id) AS Sessions
 FROM
-	information_schema.processlist AS pl
+	information_schema.processlist
 GROUP BY
+	USER,
 	DB
 ORDER BY
-	COUNT(pl.id) DESC
+	COUNT(DB) DESC,
+	DB
 ```
 
 
