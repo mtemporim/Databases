@@ -3,23 +3,18 @@
 
 ### Some queries that i use to tunning
 
-### It show quantity of connections to database 
+### It show quantity of connections to schema/database group by schema/database
 ```sql
-SELECT 
-  `DB`,
-  -- USER,
-  COUNT(ID) AS QTD_Conections
---  `USER`, 
---  `HOST`,  
---  db,
- -- COMMAND, 
- -- TIME, 
- -- STATE, 
- -- INFO   
- -- COUNT(USER) 
-FROM INFORMATION_SCHEMA.PROCESSLIST 
-GROUP BY `DB` -- , USER   -- , `USER`, `HOST` -- , `ID` , COMMAND, TIME, STATE, INFO 
-ORDER BY QTD_Conections DESC;
+SELECT
+	USER AS User,
+	DB AS `Schema`,
+	COUNT(pl.id) AS Sessions
+FROM
+	information_schema.processlist AS pl
+GROUP BY
+	DB
+ORDER BY
+	COUNT(pl.id) DESC
 ```
 
 
@@ -27,15 +22,19 @@ ORDER BY QTD_Conections DESC;
 
 ```sql
 SELECT 
-  pl.USER AS User,
-  pl.DB AS Database, 
-  SUBSTR(pl.HOST,1,(INSTR(pl.HOST, ':')-1) ) AS `Host`, 
-  pl.COMMAND AS Command, 
-  DATE_FORMAT (tran.trx_started, ' %h:%m:%s') AS StartTime,
-  pl.time AS ExecutionTime,
-  pl.ID AS TREAD_ID,
-  tran.trx_query AS QUERY    
-FROM INFORMATION_SCHEMA.INNODB_TRX tran
-	JOIN INFORMATION_SCHEMA.PROCESSLIST pl ON tran.trx_mysql_thread_id = pl.ID;
+    pl.id AS Thread,
+    pl.user AS Usuario,
+    pl.HOST AS Host,
+    pl.DB AS `Schema`,
+    it.trx_started,
+    NOW() - it.trx_started AS TimeInSeconds,
+    pl.state,
+    it.trx_state,
+    it.trx_id, 
+    it.trx_id AS blocking_trx_id,
+    it.trx_mysql_thread_id AS blocking_thread,
+    it.trx_query AS blocking_query,
+    pl.info AS Query
+FROM information_schema.processlist AS pl
+  INNER JOIN information_schema.innodb_trx AS it ON pl.id = it.trx_mysql_thread_id
 ```	
-
