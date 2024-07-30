@@ -1,6 +1,6 @@
 [<-- Back to Enterprise Manager](https://github.com/mtemporim/Databases/tree/main/Oracle/11g/EM)
 
-
+jhj
 Theres some case that we have to recreate the enterprime manager, like after a backup restore, import etc..  
 
 How to recreate de Enterprise Manager 
