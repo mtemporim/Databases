@@ -4,6 +4,4 @@
 
 ## Link to subject/function  
 1. [Queries for grants](https://github.com/mtemporim/Databases/blob/main/MySQL/Utils/Grants.md)
-1. [Queries for user](hhttps://github.com/mtemporim/Databases/blob/main/MySQL/Utils/User.md)
-
-
+1. [Queries for user](https://github.com/mtemporim/Databases/blob/main/MySQL/Utils/User.md)
