@@ -9,7 +9,8 @@
 
 # Connect to MySQL
 MYSQL_USER="root"
-MYSQL_PASS="Senha"
+MYSQL_PASS="Senha\q
+"
 MYSQL_HOST="localhost"
 
 # Users list 
