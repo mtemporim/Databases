@@ -1,0 +1,18 @@
+
+-- Verify Backup Set 
+
+SELECT 
+    backup_set_id,
+    database_name,
+    backup_start_date,
+    backup_finish_date,
+    type,
+    physical_device_name
+FROM 
+    backupset 
+JOIN 
+    backupmediafamily ON backupset.media_set_id = backupmediafamily.media_set_id
+WHERE 
+    database_name = 'NewSigor'
+ORDER BY 
+    backup_finish_date DESC;

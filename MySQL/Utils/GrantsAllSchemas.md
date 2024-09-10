@@ -9,8 +9,7 @@
 
 # Connect to MySQL
 MYSQL_USER="root"
-MYSQL_PASS="Senha\q
-"
+MYSQL_PASS="Senha"
 MYSQL_HOST="localhost"
 
 # Users list 
@@ -29,3 +28,5 @@ done
 
 mysql -u${MYSQL_USER} -p${MYSQL_PASS} -h${MYSQL_HOST} -e "FLUSH PRIVILEGES;"
 ```
+
+
