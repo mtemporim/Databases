@@ -16,7 +16,7 @@ Esse manual segue praticadas definidas no modelo (Oracle OFA) O Oracle Optimal F
 Ele padroniza o armazenamento de arquivos (binários, dados, logs) para facilitar a administração, performance e coexistência de múltiplos bancos e clients.
 https://docs.oracle.com/en/database/oracle/oracle-database/19/ladbi/optimal-flexible-architecture.html
 
-Para o caso da Alesc (SIGRH) faz-se necessária a criação  da seguinte estrutura para adequação ao **OFA para Oracle Database Full Cient for Windows X64**
+Para o nosso caso faz-se necessária a criação  da seguinte estrutura para adequação ao ##OFA para Oracle Database Full Cient for Windows X64
 #### Variaveis de ambiente dinâmicas do client e seus apontamentos de pastas no Sistema Operacional
 
 - ORACLE_BASE = C:\oracle
@@ -45,12 +45,11 @@ Invocar o Power Shell como administrador para executar os seguintes comandos de 
 
 ```powershell
 mkdir -p C:\oracle\product\19.3.0\client_1
-
 ```
 
 ### Sintaxe do comando para desconpactação do arquivo zip com a instalação do client baixado na pasta padrão de downloads do usuário corrente
 
-Expand-Archive -Path "C:\Users\<>usuárioSO>\Downloads\nomearquvibaixado `
+Expand-Archive -Path "C:\Users\<usuárioSO>\Downloads\nomearquvibaixado `
 -DestinationPath "C:\oracle\product\19.3.0\client_1" `
 -Force
 
@@ -58,7 +57,6 @@ Expand-Archive -Path "C:\Users\<>usuárioSO>\Downloads\nomearquvibaixado `
 Expand-Archive -Path "C:\Users\alescdba\Downloads\WINDOWS.X64_193000_client_home.zip" `
                -DestinationPath "C:\oracle\product\19.3.0\client_1" `
                -Force
-
 ```
 
 ##### Instalando o Oracle Full Client para Windows
@@ -69,13 +67,11 @@ Expand-Archive -Path "C:\Users\alescdba\Downloads\WINDOWS.X64_193000_client_home
 Acessar a pasta do client.
 ```powershell
 cd C:\oracle\product\19.3.0\client_1
-
 ```
 
 Executar o comando do instalador.
 ```powershell
 .\setup.bat
-
 ```
 
 Na primeira tela "Specify Oracle Home User" do instalador, deixar marcada a opção "Use Windows Built-in Account" e clicar em "Next".
@@ -101,14 +97,13 @@ Aqui vai a imagem4
 Exutar o comando
 ```powershell
 C:\oracle\product\19.3.0\client_1\OPatch\.\opatch.bat version
-
 ```
 
 Deverá aprecer algo como:
 OPatch Version: 12.2.0.1.15
 OPatch succeeded.
 
-### Acessar o site de atualização do OPatch - https://updates.oracle.com/download/6880880.html. *  ** Será necessário logar com uma conta Oracle
+### Acessar o site de atualização do OPatch - https://updates.oracle.com/download/6880880.html.   ##Será necessário logar com uma conta Oracle
 
 Na tela de escolha do Patch selecione as seguintes opções:
 1. "Select a Release" escolher "OPatch for DB 19.0.0.0.0",
@@ -121,7 +116,6 @@ Aqui vai a imagem5
 No prompt do Power Shell como administrador executar os segunites comandos para fazer um backup do OPatch atual e instalar a o OPatch atualizado.
 ```powershell
 Rename-Item "C:\oracle\product\19.3.0\client_1\OPatch" "OPatch_old"
-
 ```
 
 ### Comando para desconpactação do arquivo zip com a atualização do OPatch baixado a partir da pasta padrão de downloads do usuário corrente
@@ -130,13 +124,11 @@ Rename-Item "C:\oracle\product\19.3.0\client_1\OPatch" "OPatch_old"
 Expand-Archive -Path "C:\Users\alescdba\Downloads\p6880880_190000_MSWIN-x86-64.zip" `
                -DestinationPath "C:\oracle\product\19.3.0\client_1" `
                -Force
-
 ```
 
 Executar novamente o comando para verificar se a nova versão foi instalada corretamente.
 ```powershell
 C:\oracle\product\19.3.0\client_1\OPatch\.\opatch.bat version
-
 ```
 
 Deverá aprecer algo como:
@@ -152,7 +144,6 @@ Criar a variável de ambiente TNS_ADMIN com o caminho onde serão criados os arq
   "C:\oracle\product\19.3.0\client_1\network\admin",
   "Machine"
 )
-
 ```
 
 Criar os arquivos tnsnames.ora e sqlnet.ora na pasta TNS_ADMIN.
@@ -160,32 +151,30 @@ Criar os arquivos tnsnames.ora e sqlnet.ora na pasta TNS_ADMIN.
 
 ```powershell
 cd C:\oracle\product\19.3.0\client_1\network\admin
-
 ```
 
 ### Arquivo tnsnames.ora
 
 ```powershell
 $conteudo = @"
-SIGRH.INTRALESC.SC.GOV.BR =
+<Alias 1> =
   (DESCRIPTION =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = dboracle19-dev.intralesc.sc.gov.br)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = <IP ou DNS do Host>)(PORT = 1521))
     (CONNECT_DATA =
-      (SERVICE_NAME = sigrh)
+      (SERVICE_NAME = <nome do serviço/pdb/instância>)
     )
   )
 
-SIGRH =
+<Alias 2> =
   (DESCRIPTION =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = dboracle19-dev.intralesc.sc.gov.br)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = <IP ou DNS do Host>)(PORT = 1521))
     (CONNECT_DATA =
-      (SERVICE_NAME = sigrh)
+      (SERVICE_NAME = <nome do serviço/pdb/instância>)
     )
   )
 "@
 
 Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\tnsnames.ora" -Value -- $conteudo -Encoding ASCII
-
 ```
 
 ### Arquivo sqlnet.ora
@@ -196,11 +185,9 @@ SQLNET.AUTHENTICATION_SERVICES= (NTS)
 
 NAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)
 
-NAMES.DEFAULT_DOMAIN = intralesc.sc.gov.br
 "@
 
 Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\sqlnet.ora" -Value $conteudo -- -Encoding ASCII
-
 ```
 
 ##### Carregar a variavel de ambiente TNS_ADMIN e e testar as conexões com o client
@@ -208,16 +195,14 @@ Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\sqlnet.ora" -
 Carregar a variável TNS_ADMIN na sessão atual para evitar fechar o Power Shell.
 ```powershell
 $env:TNS_ADMIN = [Environment]::GetEnvironmentVariable("TNS_ADMIN", "Machine")
-
 ```
 
 Carregar o PATH na sessão atual para evitar fechar o Power Shell.
 ```powershell
 $env:PATH = [Environment]::GetEnvironmentVariable("Path", "Machine")
-
 ```
 
 Testar a conexão com o comando.
 ```powershell
-sqlplus c##alescdba@sigrh.intralesc.sc.gov.br
+sqlplus c##<usuário>@sigrh.intralesc.sc.gov.br
 ```
