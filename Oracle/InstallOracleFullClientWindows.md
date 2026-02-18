@@ -13,7 +13,9 @@
 ##### Disclaimer
 
 Esse manual segue praticadas definidas no modelo (Oracle OFA) O Oracle Optimal Flexible Architecture, que  é um conjunto de diretrizes de configuração e estrutura de diretórios, recomendado pela Oracle para organizar instalações de bancos de dados e clients.
+
 Ele padroniza o armazenamento de arquivos (binários, dados, logs) para facilitar a administração, performance e coexistência de múltiplos bancos e clients.
+
 https://docs.oracle.com/en/database/oracle/oracle-database/19/ladbi/optimal-flexible-architecture.html
 
 Para o nosso caso faz-se necessária a criação  da seguinte estrutura para adequação ao ##OFA para Oracle Database Full Cient for Windows X64
@@ -30,10 +32,13 @@ Para o nosso caso faz-se necessária a criação  da seguinte estrutura para ade
 ##### Baixar o software do Oracle Full Client para Windows
 
 Baixar o software do Oracle Full Client para Windows pesquisando por "Oracle Database <Verssão do DB> Client <versão: exemplo (19.3)> for Microsoft Windows x64 (64-bit)".
+
 No nosso caso "Oracle Database 19c Client (19.3) for Microsoft Windows x64 (64-bit)", baixar a versão com "home".
+
 Arquivo "**WINDOWS.X64_193000_client_home.zip**"
 
 Ao clicar em download será direicionado para uma tela de login no qual deverá se logar com uma conta Oracle para realizar o download
+
 Será baixado o arquivo da instalação do client, algo como "WINDOWS.X64_193000_client_home.zip"
 
 ##### Estrutura de pastas OFA-Compliance para instalação do Oracle Full Client para Windows
@@ -176,7 +181,7 @@ $conteudo = @"
   )
 "@
 
-Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\tnsnames.ora" -Value -- $conteudo -Encoding ASCII
+Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\tnsnames.ora" -Value $conteudo -Encoding ASCII
 ```
 
 ### Arquivo sqlnet.ora
@@ -189,7 +194,7 @@ NAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)
 
 "@
 
-Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\sqlnet.ora" -Value $conteudo -- -Encoding ASCII
+Set-Content -Path "C:\oracle\product\19.3.0\client_1\network\admin\sqlnet.ora" -Value $conteudo -Encoding ASCII
 ```
 
 ##### Carregar a variavel de ambiente TNS_ADMIN e e testar as conexões com o client
