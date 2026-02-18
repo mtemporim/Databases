@@ -1,6 +1,6 @@
 # Instalação do Oracle Client 19.X Windows X64
 
-## Índice (títulos nível 5)
+## Índice 
 - [Disclaimer](#disclaimer)
 - [Baixar o software do Oracle Full Client para Windows](#baixar-o-software-do-oracle-full-client-para-windows)
 - [Estrutura de pastas OFA-Compliance para instalação do Oracle Full Client para Windows](#estrutura-de-pastas-ofa-compliance-para-instalacao-do-oracle-full-client-para-windows)
@@ -103,7 +103,9 @@ Deverá aprecer algo como:
 OPatch Version: 12.2.0.1.15
 OPatch succeeded.
 
-### Acessar o site de atualização do OPatch - https://updates.oracle.com/download/6880880.html.   ##Será necessário logar com uma conta Oracle
+### Acessar o site de atualização do OPatch - https://updates.oracle.com/download/6880880.html.   
+
+## Será necessário logar com uma conta Oracle
 
 Na tela de escolha do Patch selecione as seguintes opções:
 1. "Select a Release" escolher "OPatch for DB 19.0.0.0.0",
