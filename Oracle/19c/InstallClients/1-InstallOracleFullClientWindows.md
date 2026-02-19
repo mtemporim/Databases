@@ -76,19 +76,19 @@ Executar o comando do instalador.
 
 Na primeira tela "Specify Oracle Home User" do instalador, deixar marcada a opção "Use Windows Built-in Account" e clicar em "Next".
 
-<img src="img/1-1.png" alt="Tela: Specify Oracle Home User" width="850">
+<img src="img/1-1.png" alt="Tela: Specify Oracle Home User" width="425">
 
 Na tela seguinte "Specify installation location" informar o caminho da ORACLE_BASE, no nosso caso "C:\oracle" e clciar em "Next".
 
-<img src="img/1-2.png" alt="Tela: Specify installation location" width="850">
+<img src="img/1-2.png" alt="Tela: Specify installation location" width="425">
 
 E na ultima tela antes da instalação "Summary", conferir os valores listados de acordo com o disclaimer inicial e clicar em "Install".
 
-<img src="img/1-3.png" alt="Tela: Summary" width="850">
+<img src="img/1-3.png" alt="Tela: Summary" width="425">
 
 Na tela "Finish" clicar em "Close" (não fechar o Prompt do Power Shell)
 
-<img src="img/1-4.png" alt="Tela: Finish" width="850">
+<img src="img/1-4.png" alt="Tela: Finish" width="425">
 
 
 <br><br>
@@ -116,7 +116,7 @@ Na tela de escolha do Patch selecione as seguintes opções:
 
 Clicar em "Download", será baixado o arquivo da atualização do OPatch, algo como "**p6880880_190000_MSWIN-x86-64.zip**"
 
-<img src="img/1-5.png" alt="Tela: Patch 6880880" width="850">
+<img src="img/1-5.png" alt="Tela: Patch 6880880" width="425">
 
 No prompt do Power Shell como administrador executar os seguintes comandos para fazer um backup do OPatch atual.
 ```powershell
