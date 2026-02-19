@@ -76,7 +76,7 @@ Executar o comando do instalador.
 
 Na primeira tela "Specify Oracle Home User" do instalador, deixar marcada a opção "Use Windows Built-in Account" e clicar em "Next".
 
-<img src="img/1-1.png" alt="Tela: Specify Oracle Home User" width="425">
+<img src="img/1-1.png" alt="Tela: Specify Oracle Home User" width="650">
 
 Na tela seguinte "Specify installation location" informar o caminho da ORACLE_BASE, no nosso caso "C:\oracle" e clciar em "Next".
 
