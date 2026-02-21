@@ -26,13 +26,13 @@ No PostgreSQL existe UMA entidade só chamada ROLE.
 - REPLICATION
 - BYPASSRLS
 
-Equivalente a:
+Equivalente a:  
 
 - SQL Server → login
 - MySQL → global privileges
 - Oracle → system privileges
 
-### 2. Nível de banco (DATABASE)
+### 2. Nível de banco (DATABASE) 
 
 Controla acesso ao banco, não aos objetos:
 
