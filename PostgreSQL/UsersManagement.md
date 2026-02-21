@@ -47,7 +47,7 @@ Equivalente a:
 
 - SQL Server → acesso ao database
 - Oracle → CREATE SESSION
-- MySQL → acesso ao schema
+- MySQL → acesso ao schema  
 
 ### 3. Nível de schema
 
