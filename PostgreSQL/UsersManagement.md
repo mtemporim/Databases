@@ -62,7 +62,7 @@ GRANT USAGE ON SCHEMA <schema name> TO <role>;
 
 ### 4. Pontos IMPORTANTES do PostgreSQL e pegadinhas comuns
 
->[!TIP]
+>[!NOTE]
 >Aqui o PostgreSQL se aproxima do Oracle, mas sem sinônimos.
 
 Comparação direta com outros bancos.  
