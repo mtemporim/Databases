@@ -74,7 +74,7 @@ Comparação direta com outros bancos.
 |Oracle|User + grants diretos ou via roles + sinônimos|
 
 >[!IMPORTANT]
->Não existe “usuário por banco”
+>Não existe “usuário por banco”  
 
 O usuário existe no cluster inteiro, mas:  
 
