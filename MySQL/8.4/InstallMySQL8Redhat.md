@@ -62,8 +62,8 @@ sudo dnf -y update
 ### Criação dos usuários administrativos
 
 ```shellscript
-chmod 770 /home/alescdba
-sudo useradd -m -d /home/alescdba -g alescdba <usuário>
+chmod 770 /home/admindba
+sudo useradd -m -d /home/admindba -g admindba <usuário>
 sudo passwd <usuário> (informar a senha 123#mudar)
 ```
 
@@ -77,8 +77,8 @@ root         ALL=(ALL)       ALL
 <usuário1>   ALL=(ALL)       ALL  
 <usuário12   ALL=(ALL)       ALL  
 
-Criar o arquivo /etc/sudoers.d/alescdba contendo a linha abaixo  
-%alescdba        ALL=(ALL)       ALL  
+Criar o arquivo /etc/sudoers.d/admindba contendo a linha abaixo  
+%admindba        ALL=(ALL)       ALL  
 
 ### Instalar os pacotes aplicativos para o Epel
 sudo dnf -y install yum-utils epel-release 
@@ -92,4 +92,12 @@ echo -e "syntax on\ncolorscheme desert" >> /root/.vimrc
 
 
 #Configurar o schema de cores padrão do vim para o desert para os usuários administrativo (logado com o usuário administrativo)
-sudo echo -e "syntax on\ncolorscheme desert" >> /home/alescdba/.vimrc
+sudo echo -e "syntax on\ncolorscheme desert" >> /home/admindba/.vimrc
+
+
+
+## Camila Vello Tamburim
+
+##### Ela é muito Zé Roela
+
+# Mas eu amo muito ela ♥
