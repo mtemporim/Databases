@@ -82,34 +82,6 @@ subscription-manager repos --list-enabled
 ### Limpar cache
 dnf clean all
 
-
-### Atualizar 
-dnf update -y
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-subscription-manager repos --list-enabled
-
-
-
-
-
-Limpar cache e atualizar
-
-
-
 ### Atualizar os pacotes 
 sudo dnf -y update
 
