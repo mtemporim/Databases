@@ -56,6 +56,60 @@ https://www.mysql.com/support/supportedplatforms/database.html
 |/mysql/dump/securefile (dump e securefile)|50 GiB| 
 |/mysql/scripts/|
 
+
+
+### Registrar na conta Red Hat para utilizar os repositorios oficiais 
+subscription-manager register
+
+
+### Anexar automaticamente a Developer Subscription
+subscription-manager attach --auto
+
+
+### Confirmar que a subscription está ativa
+subscription-manager status
+
+
+### Habilitar os repositórios corretos do RHEL 9
+subscription-manager repos \
+  --enable=rhel-9-for-x86_64-baseos-rpms \
+  --enable=rhel-9-for-x86_64-appstream-rpms
+
+
+### Confirmar se os repositorios foram referenciados corretamente 
+subscription-manager repos --list-enabled
+
+### Limpar cache
+dnf clean all
+
+
+### Atualizar 
+dnf update -y
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+subscription-manager repos --list-enabled
+
+
+
+
+
+Limpar cache e atualizar
+
+
+
 ### Atualizar os pacotes 
 sudo dnf -y update
 
