@@ -1,14 +1,10 @@
-# teste 
-
 # Instalação do MySQL 8.4 no Red Hat Enterprise Linux 9.7
-
-<br><br>  
 
 ## Índice
 
-### Matriz de compatibilidade 
+### Matriz de compatibilidade
 
-https://www.mysql.com/support/supportedplatforms/database.html
+[https://www.mysql.com/support/supportedplatforms/database.html]
 
 ### Esquema de particionamento do MySQL 8.4
 
@@ -16,12 +12,12 @@ https://www.mysql.com/support/supportedplatforms/database.html
 
 |Mounting Point|Size|
 |:--|:--|
-|boot     |1 GiB|
-|boot efi |1 Gib|
-|swap     |16 GiB|
-|var      |60 GiB|
-|home     |60 GiB|
-|/        |63 GiB|
+|boot|1 GiB|
+|boot efi|1 Gib|
+|swap|16 GiB|
+|var|60 GiB|
+|home|60 GiB|
+|/|63 GiB|
   
 **Disk 2 - 200 GB**  
 
@@ -58,7 +54,7 @@ https://www.mysql.com/support/supportedplatforms/database.html
 |Mounting Point|Size|
 |:--|:--|
 |/mysql/dump/securefile (dump e securefile)|50 GiB|
-|/mysql/scripts/|
+|/mysql/scripts/||
 
 ### Registrar na conta Red Hat para utilizar os repositorios oficiais
 
@@ -104,7 +100,7 @@ dnf clean all
 sudo dnf -y update
 ```
 
-### Preparar o ambiente para o permissionamento de grupo para o usuário dbadmin 
+### Preparar o ambiente para o permissionamento de grupo para o usuário dbadmin
 
 Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo dbadmin, e o "setfacl" evita “permissão quebrada”
 
@@ -156,10 +152,6 @@ Aplicar as permissões corretas para o arquivo de profile
 chmod 644 /etc/profile.d/dbadmin.sh
 ```
 
-
-
-
-
 ### Configurar o vim para exibir o tema desert como default para usuários logados com o root
 
 ```shellscript
@@ -200,7 +192,7 @@ EOF
 chmod 644 /etc/profile.d/dbadmin.sh
 ```
 
-### Instalar os pacotes de aplicativos, ferramentas e utilitátios opcionais 
+### Instalar os pacotes de aplicativos, ferramentas e utilitátios opcionais
 
 ```shellscript
 dnf -y install dnf-utils setroubleshoot setools policycoreutils-python-utils 
@@ -228,7 +220,7 @@ dnf install -y \
 https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 ```
 
-### Atualizar o cache 
+### Atualizar o cache
 
 ```shellscript
 dnf clean all
@@ -241,18 +233,15 @@ dnf makecache
 dnf install -y htop
 ```
 
-
-
 ### Adicionando os discos para o MySQL
 
-#### Após atachar o disco que terá o ponto de montagem unico em /mysql/data executar o seguinte comando 
+#### Após atachar o disco que terá o ponto de montagem unico em /mysql/data executar o seguinte comando
 
 ```shellscript
 lsblk
 ```
 
 Ele deverá paracer algo com **sdb    8:16   0 200G  0 disk**
-
 
 #### Criar o Physical Volume (PV)
 
@@ -316,7 +305,7 @@ O que isso faz?
 - -l 100%FREE → usa todo o espaço disponível do VG
 - disk2-vg1 → VG de origem
 
-Verificar 
+Verificar
 
 ```shellscript
 lvs
@@ -330,7 +319,6 @@ swap
 mysql_data  -wi-a----- <200.00g  
 
 O caminho do dispositivo agora é: **/dev/disk2-vg1/mysql_data**
-
 
 #### Criar o filesystem (XFS)
 
@@ -362,16 +350,15 @@ mkdir -p /mysql/data
 blkid /dev/disk2-vg1/mysql_data
 ```
 
-Saída esperada   
+Saída esperada
 /dev/disk2-vg1/mysql_data: **UUID="1a095ba2-2ec2-4ef8-9268-d7334f4a7875" TYPE="xfs"**
-
 2. Editar /etc/fstab
 
 ```shellscript
 vim /etc/fstab
 ```
 
-Adicionar: 
+Adicionar:
 
 UUID=1a095ba2-2ec2-4ef8-9268-d7334f4a7875 /mysql/data  xfs  defaults,noatime  0 0
 
@@ -382,7 +369,6 @@ Por que noatime?
 
 #### Testar o fstab (OBRIGATÓRIO)
 
-
 ```shellscript
 umount /mysql/data
 mount -a
@@ -391,13 +377,10 @@ mount -a
 >[!NOTE]
 >Se não der erro, está correto.
 
-
-
-
-
 ```shellscript
 visudo
 ```
+
 Localizar o seguinite trecho "**Allow root to run any commands anywhere**" e adicionar os  usuários administradores de acordo com o exemplo de  root ja disponível, salvar e sair do visudo"  
 root         ALL=(ALL)       ALL  
 <usuário1>   ALL=(ALL)       ALL  
@@ -407,23 +390,17 @@ Criar o arquivo /etc/sudoers.d/admindba contendo a linha abaixo
 %admindba        ALL=(ALL)       ALL  
 
 ### Instalar os pacotes aplicativos para o Epel
-sudo dnf -y install yum-utils epel-release 
 
-### Instalar os pacotes de aplicativos opcionais, ferramentas e utilitátios opcionais 
+sudo dnf -y install yum-utils epel-release
+
+### Instalar os pacotes de aplicativos opcionais, ferramentas e utilitátios opcionais
+
 sudo dnf install -y vim-enhanced wget bash-completion tcpdump setroubleshoot setools gcc.x86_64 net-tools tree htop lsof unzip bzip2 ncurses-compat-libs perl
 
+### Configurar o schema de cores padrão do vim para o desert para o root (logado com o root)
 
-#Configurar o schema de cores padrão do vim para o desert para o root (logado com o root)
 echo -e "syntax on\ncolorscheme desert" >> /root/.vimrc
 
+### Configurar o schema de cores padrão do vim para o desert para os usuários administrativo (logado com o usuário administrativo)
 
-#Configurar o schema de cores padrão do vim para o desert para os usuários administrativo (logado com o usuário administrativo)
 sudo echo -e "syntax on\ncolorscheme desert" >> /home/admindba/.vimrc
-
-
-
-## Camila Vello Tamburim
-
-##### Ela é muito Zé Roela
-
-# Mas eu amo muito ela ♥
