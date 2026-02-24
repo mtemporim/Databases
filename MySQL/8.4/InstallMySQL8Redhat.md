@@ -122,8 +122,3 @@ sudo echo -e "syntax on\ncolorscheme desert" >> /home/admindba/.vimrc
 
 
 
-## Camila Vello Tamburim
-
-##### Ela é muito Zé Roela
-
-# Mas eu amo muito ela ♥
