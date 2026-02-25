@@ -1,0 +1,124 @@
+
+# =============================================================================
+# my.cnf - MySQL 8.0 LTS
+# Servidor: ALESC - Novo servidor MySQL 8.0 | RHEL 9.7
+# Hardware: 16 GiB RAM
+# Estrutura de discos:
+#   Disk 2 (200GB) → /mysql/data
+#   Disk 3 (50GB)  → /mysql/innodb/{redo,undo,doublewrite}
+#   Disk 4 (50GB)  → /mysql/innodb/temp
+#   Disk 5 (50GB)  → /mysql/audit
+#   Disk 6 (50GB)  → /mysql/log  (binlog + errorlog)
+#   Disk 7 (50GB)  → /mysql/dump/securefile + /mysql/scripts
+# =============================================================================
+
+[mysqld]
+# =============================================================================
+# CORE / PATHS - DIRETÓRIOS E ARQUIVOS BASE
+# =============================================================================
+basedir                         = /mysql/mysql                                  
+datadir                         = /mysql/data
+#innodb_data_home_dir           = /mysql/data
+pid-file                        = /run/mysqld/mysqld.pid
+socket                          = /mysql/data/mysql.sock
+plugin_dir                      = /mysql/mysql/lib/plugin                       
+lc_messages_dir                 = /mysql/mysql/share                            
+
+# =============================================================================
+# INNODB PATHS - Lista explícita de diretórios permitidos ao InnoDB (boa prática)
+# Onde o InnoDB deve varrer no startup para localizar tablespaces (.ibd) fora do datadir
+# =============================================================================
+innodb_directories              = /mysql/data:/mysql/innodb:/mysql/innodb/temp:/mysql/log:/mysql/audit:/mysql/dump
+
+# Atenção: innodb_undo_directory, innodb_log_group_home_dir e innodb_doublewrite_dir devem ser definidos ANTES do primeiro # mysqld --initialize 
+# NÃO podem ser alterados de caminho posteriormente sem procedimento de recovery. 
+# Expansão do volume/disco subjacente é segura e transparente ao MySQL.
+
+innodb_log_group_home_dir       = /mysql/innodb/redo            # 
+innodb_redo_log_capacity        = 4G                            # baixa carga → não precisa de 12G
+
+innodb_undo_directory           = /mysql/innodb/undo
+
+innodb_doublewrite_dir          = /mysql/innodb/doublewrite
+innodb_doublewrite              = 1
+
+innodb_tmpdir                   = /mysql/innodb/temp
+innodb_temp_tablespaces_dir     = /mysql/innodb/temp            # session temp tables (MySQL 8+)
+tmpdir                          = /mysql/innodb/temp
+innodb_temp_data_file_path      = /mysql/innodb/temp/ibtmp1:12M:autoextend:max:10G  # Temp tablespace (ibtmp1) pode crescer porém o limite é bom
+
+# =============================================================================
+# === CHARACTER SET / COLLATION
+# =============================================================================
+character_set_server            = utf8mb4
+collation_server                = utf8mb4_general_ci
+
+# =============================================================================
+# CONEXÃO E SEGURANÇA
+# =============================================================================
+server-id                       = 1
+user                            = mysql
+default-storage-engine          = innodb
+max_allowed_packet              = 64M
+max_connections                 = 300
+connect_timeout                 = 30
+secure-file-priv                = /mysql/dump/securefile
+skip-mysqlx                                                                    # skip-mysqlx: desabilita o plugin X Protocol (porta 33060), manter se não usar MySQL Shell com X Protocol ou conexões NoSQL.
+
+
+# =============================================================================
+# PERFORMANCE E MEMÓRIA (otimizado para 16 GB RAM total)
+# =============================================================================
+innodb_buffer_pool_size         = 10G
+innodb_buffer_pool_instances    = 8
+innodb_log_buffer_size          = 32M
+innodb_file_per_table           = 1                 # Cada tabela em seu próprio .ibd
+innodb_flush_method             = O_DIRECT          # melhor performance em Linux moderno, evita double buffering com OS cache
+innodb_flush_log_at_trx_commit  = 1                 # ACID completo (recomendado)
+innodb_io_capacity              = 200               # Ajuste conforme IOPS do storage ou deixar o MySQL auto-tunar ou adicionar depois se precisar
+innodb_io_capacity_max          = 400
+innodb_stats_on_metadata        = 0                 # Reduz I/O em SHOW TABLE STATUS etc.
+
+thread_cache_size               = 50
+table_open_cache                = 4000
+table_definition_cache          = 2000
+
+tmp_table_size                  = 256M
+max_heap_table_size             = 256M
+sort_buffer_size                = 4M
+join_buffer_size                = 4M
+read_buffer_size                = 2M
+read_rnd_buffer_size            = 4M
+
+
+# =============================================================================
+# LOGS 
+# =============================================================================
+log-error                       = /mysql/log/log_mysql.err
+log-timestamps                  = SYSTEM
+log_error_verbosity             = 3          # 1=erros, 2=erros+avisos, 3=+notas
+
+log_output                      = FILE
+general_log_file                = /mysql/audit/general.log
+general_log                     = 0 
+
+slow_query_log                  = 0
+slow_query_log_file             = /mysql/audit/slow_query.log
+long_query_time                 = 15
+
+log-bin                         = /mysql/log/mysql-bin
+log-bin-index                   = /mysql/log/mysql-bin.index
+binlog_format                   = ROW
+sync_binlog                     = 1
+binlog_expire_logs_seconds      = 432000     # Retenção de binlog: 5 dias
+
+
+# =============================================================================
+# REPLICAÇÃO E GTID
+# =============================================================================
+gtid_mode                       = 1
+enforce_gtid_consistency        = 1
+
+[client]
+port                            = 3306
+socket                          = /mysql/data/mysql.sock
