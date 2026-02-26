@@ -308,7 +308,7 @@ O que isso faz?
 - -l 100%FREE → usa todo o espaço disponível do VG
 - disk2-vg1 → VG de origem
 
-Verificar 
+Verificar
 
 ```shellscript
 lvs
@@ -322,7 +322,6 @@ swap
 mysql_data  -wi-a----- <200.00g  
 
 O caminho do dispositivo agora é: **/dev/disk2-vg1/mysql_data**
-
 
 #### Criar o filesystem (XFS)
 
@@ -354,9 +353,8 @@ mkdir -p /mysql/data
 blkid /dev/disk2-vg1/mysql_data
 ```
 
-Saída esperada   
+Saída esperada  
 /dev/disk2-vg1/mysql_data: **UUID="1a095ba2-2ec2-4ef8-9268-d7334f4a7875" TYPE="xfs"**
-
 2. Editar /etc/fstab
 
 ```shellscript
