@@ -23,13 +23,13 @@
 
 |Mounting Point|Size|
 |:--|:--|
-|/mysql/Data|50 GiB|
+|/mysql/Data|200 GiB|
   
 **Disk 3 - 50 GB**  
 
 |Mounting Point|Size|
 |:--|:--|
-|/mysql/innodb/  (redo, undo, doublewrite)|200 GiB|
+|/mysql/innodb/  (redo, undo, doublewrite)|50 GiB|
 
 **Disk 4 - 50 GB**  
 
