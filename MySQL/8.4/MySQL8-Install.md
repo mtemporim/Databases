@@ -391,13 +391,11 @@ mount -a
 
 ```
 
-
 pvcreate /dev/sdc
 pvcreate /dev/sdd
 pvcreate /dev/sde
 pvcreate /dev/sdf
 pvcreate /dev/sdg
-
 
 vgcreate disk3-vg1 /dev/sdc
 vgcreate disk4-vg1 /dev/sdd
@@ -405,13 +403,11 @@ vgcreate disk5-vg1 /dev/sde
 vgcreate disk6-vg1 /dev/sdf
 vgcreate disk7-vg1 /dev/sdg
 
-
 lvcreate -n mysql_innodb -l 100%FREE disk3-vg1
 lvcreate -n mysql_innodb_tmp -l 100%FREE disk4-vg1
 lvcreate -n mysql_audit -l 100%FREE disk5-vg1
 lvcreate -n mysql_log -l 100%FREE disk6-vg1
 lvcreate -n mysql_dump -l 100%FREE disk7-vg1
-
 
 mkfs.xfs /dev/disk3-vg1/mysql_innodb
 mkfs.xfs /dev/disk4-vg1/mysql_innodb_tmp
@@ -425,28 +421,13 @@ blkid /dev/disk5-vg1/mysql_audit
 blkid /dev/disk6-vg1/mysql_log
 blkid /dev/disk7-vg1/mysql_dump
 
-
-
 mkdir -p /mysql/innodb/temp
 mkdir -p /mysql/audit
 mkdir -p /mysql/log
-mkdir -p /mysql/dump 
-
-
+mkdir -p /mysql/dump
 
 UUID=01eba0b7-5100-4a27-96a0-9a5c37f4da98 /mysql/innodb  xfs  defaults,noatime  0 0
 UUID=f93e70ff-f01b-4c48-9edf-94dfb19ce94a /mysql/innodb/temp  xfs  defaults,noatime  0 0
 UUID=76af6b56-4f8e-44ae-9f22-883da507c511 /mysql/audit  xfs  defaults,noatime  0 0
 UUID=e7d08c31-cd72-4d69-8176-c276139158aa /mysql/log  xfs  defaults,noatime  0 0
 UUID=a95b7f41-f1ee-410f-8895-1cfcd917158b /mysql/dump  xfs  defaults,noatime  0 0
-
-
-
-
-
-
-
-
-
-
-
