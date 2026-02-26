@@ -363,7 +363,7 @@ Saída esperada
 vim /etc/fstab
 ```
 
-Adicionar: 
+Adicionar:
 
 UUID=1a095ba2-2ec2-4ef8-9268-d7334f4a7875 /mysql/data  xfs  defaults,noatime  0 0
 
@@ -373,7 +373,6 @@ Por que noatime?
 - Bom para banco de dados
 
 #### Testar o fstab (OBRIGATÓRIO)
-
 
 ```shellscript
 umount /mysql/data
