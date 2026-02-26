@@ -12,7 +12,7 @@
 
 ## Pré-requisitos da atualização
 
-Verificar os pacotes 
+Verificar os pacotes
 
 ```shell
 dnf -y install libaio numactl-libs ncurses-compat-libs openssl

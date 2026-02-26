@@ -54,7 +54,7 @@
 |Mounting Point|Size|
 |:--|:--|
 |/mysql/dump/securefile (dump e securefile)|50 GiB|
-|/mysql/scripts/|
+|/mysql/scripts/||
 
 ### Registrar na conta Red Hat para utilizar os repositorios oficiais
 
@@ -100,7 +100,7 @@ dnf clean all
 sudo dnf -y update
 ```
 
-### Preparar o ambiente para o permissionamento de grupo para o usuário dbadmin 
+### Preparar o ambiente para o permissionamento de grupo para o usuário dbadmin
 
 Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo dbadmin, e o "setfacl" evita “permissão quebrada”
 
@@ -192,7 +192,7 @@ EOF
 chmod 644 /etc/profile.d/dbadmin.sh
 ```
 
-### Instalar os pacotes de aplicativos, ferramentas e utilitátios opcionais 
+### Instalar os pacotes de aplicativos, ferramentas e utilitátios opcionais
 
 ```shellscript
 dnf -y install dnf-utils setroubleshoot setools policycoreutils-python-utils 
@@ -220,7 +220,7 @@ dnf install -y \
 https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 ```
 
-### Atualizar o cache 
+### Atualizar o cache
 
 ```shellscript
 dnf clean all
@@ -233,18 +233,15 @@ dnf makecache
 dnf install -y htop
 ```
 
-
-
 ### Adicionando os discos para o MySQL
 
-#### Após atachar o disco que terá o ponto de montagem unico em /mysql/data executar o seguinte comando 
+#### Após atachar o disco que terá o ponto de montagem unico em /mysql/data executar o seguinte comando
 
 ```shellscript
 lsblk
 ```
 
 Ele deverá paracer algo com **sdb    8:16   0 200G  0 disk**
-
 
 #### Criar o Physical Volume (PV)
 
@@ -379,10 +376,6 @@ mount -a
 
 >[!NOTE]
 >Se não der erro, está correto.
-
-
-
-
 
 ```shellscript
 

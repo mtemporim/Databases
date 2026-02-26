@@ -73,7 +73,7 @@ Copiar o link para download e MD5 para validação do checksum
 cd /tmp
 ```
 
-Baixar o tarball (versão 8.0.45, glibc2.28, x86_64) 
+Baixar o tarball (versão 8.0.45, glibc2.28, x86_64)
 
 ```shell
 wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.45-linux-glibc2.28-x86_64.tar.xz
