@@ -311,7 +311,7 @@ Confirmar status do serviço
 systemctl status mysqld
 ```
 
----
+
 
 ## Validação pós-upgrade
 
