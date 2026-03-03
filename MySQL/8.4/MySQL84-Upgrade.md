@@ -10,6 +10,8 @@
 
 ---
 
+## Índice
+
 ## Pré-requisitos da atualização
 
 Verificar os pacotes
@@ -21,7 +23,7 @@ dnf -y install libaio numactl-libs ncurses-compat-libs openssl
 ### Carregar a senha se root (temporariamente)
 
 ```shell
-senha = Alesc01#
+senha=DBAdmin#
 ```
 
 ### Verificar a versão atual em execução
@@ -77,9 +79,7 @@ mysql -u root -p$senha -e "XA RECOVER;"
 
 > Se retornar linhas, as transações XA devem ser resolvidas (commit ou rollback) antes de prosseguir.
 
----
-
-## Backup físico antes da atualização
+### Backup físico antes da atualização
 
 > [!IMPORTANT]
 > Este passo é **obrigatório**. Realize o backup completo do datadir antes de qualquer alteração.
@@ -99,6 +99,17 @@ Realizar o backup do datadir
 Backup físico (datadir + binlogs + my.cnf)
 
 ```shell
+BKPDATE=$(date +%F)
+
+mkdir -p /mysql/dump/pre-upgrade-mysql8.0-$BKPDATE
+
+tar -czf /mysql/dump/pre-upgrade-mysql8.0-$BKPDATE/pre-upgrade-mysql8.0-$BKPDATE.tar.gz \
+  /mysql/data \
+  /mysql/log \
+  /mysql/innodb \
+  /etc/my.cnf
+
+
 mkdir -p /mysql/dump/pre-upgrade-mysql8.0-$(date +%F)
 
 tar -czf /mysql/dump/pre-upgrade-mysql8.0-$(date +%F)/pre-upgrade-mysql8.0-$(date +%F).tar.gz \
@@ -114,7 +125,7 @@ Confirmar o backup
 ls -lh /mysql/dump/pre-upgrade-mysql8.0-$(date +%F) | grep tar.gz
 ```
 
-## Baixar e extrair o tarball do MySQL 8.4
+### Baixar, extrair e distribuir o tarball do MySQL 8.4
 
 1. Acesse a página de download do MySQL [https://downloads.mysql.com/], vá para a página de downloads do **MySQL Community Server**.
 2. Em **Select Version:** Escolha a versão desejada do MySQL (por exemplo, 8.0 ou 8.4 LTS).
@@ -180,9 +191,9 @@ Confirmar que o diretório foi criado
 ls /mysql/ | grep 8.4
 ```
 
----
+## Atualizar o MySQL 8 para o 8.4
 
-## Atualizar o link simbólico
+### Atualizar o link simbólico
 
 Esta é a etapa central do processo. O symlink `/mysql/mysql` aponta para o diretório da versão em uso. Basta redirecioná-lo para o 8.4.
 
@@ -207,7 +218,7 @@ ls -la /mysql/mysql
 Saída esperada:
 
 ```text
-lrwxrwxrwx. 1 root root XX ... /mysql/mysql -> /mysql/mysql-8.4.5-linux-glibc2.28-x86_64
+lrwxrwxrwx. 1 root root XX ... /mysql/mysql -> /mysql/mysql-8.4.8-linux-glibc2.28-x86_64
 ```
 
 Confirmar a estrutura de binários
@@ -234,12 +245,12 @@ chown -R mysql:mysql /mysql/mysql
 
 ---
 
-## Configurar os contextos SELinux para o novo diretório 8.4
+### Configurar os contextos SELinux para o novo diretório 8.4
 
 Libera o symlink atualizado
 
 ```shell
-semanage fcontext -a -t bin_t "/mysql/mysql"
+semanage fcontext -m -t bin_t "/mysql/mysql"
 restorecon -v /mysql/mysql
 ```
 
@@ -254,7 +265,7 @@ restorecon -R -v /mysql/mysql-8.4.8-linux-glibc2.28-x86_64
 
 ---
 
-## Validar o my.cnf com o novo binário
+### Validar o my.cnf com o novo binário
 
 Antes de subir o serviço, validar que o 8.4 lê o my.cnf sem erros
 
@@ -266,7 +277,7 @@ mysqld --defaults-file=/etc/my.cnf --validate-config
 
 ---
 
-## Atualizar a descrição do serviço systemd (opcional)
+### Atualizar a descrição do serviço systemd (opcional)
 
 O arquivo de serviço funciona sem alterações pois o `ExecStart` aponta para `/mysql/mysql/bin/mysqld` via symlink. Caso queira atualizar a descrição:
 
@@ -280,9 +291,7 @@ Recarregar o systemd
 systemctl daemon-reload
 ```
 
----
-
-## Iniciar o MySQL 8.4
+### Iniciar o MySQL 8.4
 
 ```shell
 systemctl start mysqld
@@ -313,7 +322,7 @@ systemctl status mysqld
 
 ## Validação pós-upgrade
 
-### Verificar a versão em execução
+### Verificar a versão em execução pós-upgrade
 
 ```shell
 mysql -u root -p$senha -e "SELECT VERSION();"
@@ -371,9 +380,9 @@ ls /mysql/innodb/temp/        # deve conter ibtmp1 e diretório #innodb_temp
 ls /mysql/log/                # deve conter log_mysql.err e mysql-bin.000001
 ```
 
----
+## Pós-upgrade
 
-## Pós-upgrade — limpeza do diretório 8.0
+### Limpeza do diretório 8.0
 
 Após validar que o ambiente 8.4 está estável (recomendado aguardar pelo menos 48h em produção), o diretório da versão anterior pode ser removido.
 
@@ -384,16 +393,30 @@ rm -rf /mysql/mysql-8.0.45-linux-glibc2.28-x86_64
 > [!IMPORTANT]
 > Só execute a remoção após confirmar que **não há necessidade de rollback**. Enquanto o diretório 8.0 existir, o rollback é possível apenas redirecionando o symlink de volta.
 
+### Limpeza da senha armazenada durante o processo de atualização
+
+>[!WARNING]
+>
+>Limpar o histórico para eliminar a senha que foi explicitamente declarada no inicio da atualização. 
+
+
+```shell
+history -d $(history 1 | awk '{print $1}')
+unset Alesc01#
+```
+
 ### Rollback (se necessário antes de remover o 8.0)
 
 ```shell
 systemctl stop mysqld
 unlink /mysql/mysql
 ln -s /mysql/mysql-8.0.45-linux-glibc2.28-x86_64 /mysql/mysql
-semanage fcontext -a -t bin_t "/mysql/mysql"
+semanage fcontext -m -t bin_t "/mysql/mysql"
 restorecon -v /mysql/mysql
 systemctl start mysqld
 ```
 
+---
 > [!IMPORTANT]
 > O rollback só é possível se o datadir **não foi modificado** pelo 8.4 de forma incompatível. Uma vez que o MySQL 8.4 escreve no datadir (upgrade automático do dicionário), o rollback para o 8.0 pode não ser suportado. Por isso o backup do datadir antes da atualização é obrigatório.
+---
