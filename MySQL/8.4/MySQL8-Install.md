@@ -2,6 +2,8 @@
 
 [https://dev.mysql.com/doc/refman/8.0/en/binary-installation.html]
 
+## Índice
+
 ## Pré-requisitos do sistema
 
 ### Verificar dependências necessárias
@@ -17,7 +19,7 @@ groupadd -r mysql
 useradd -r -g mysql -s /sbin/nologin -d /mysql mysql
 ```
 
-Verificar se todos os discos estão nmontados
+Verificar se todos os discos estão montados
 
 ```shell
 lsblk
@@ -60,7 +62,7 @@ mysql hard nofile 1048576
 EOF
 ```
 
-### Baixar e extrair o tarball
+### Baixar, extrair e distribuir o tarball
 
 1. Acesse a página de download do MySQL [https://downloads.mysql.com/], vá para a página de downloads do **MySQL Community Server**.
 2. Em **Select Version:** Escolha a versão desejada do MySQL (por exemplo, 8.0 ou 8.4 LTS).
@@ -80,17 +82,17 @@ wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.45-linux-glibc2.28-
 ```
 
 Cole aqui o MD5 que você está vendo na página do MySQL de onde foi copiado o link para o download  
-EXPECTED="ebe0a06e5f0125c0265eb3576b4c01a4"
+EXPECTED="MD5 copiado do site de downloads"
 
 ```shell
-EXPECTED="<colar aqui>"
+EXPECTED="<colar aqui o MD5 copiado do site de downloads>"
 ```
 
 Execute esse comando informando o nome do arquivo baixado  
 ACTUAL=$(md5sum mysql-8.0.45-linux-glibc2.28-x86_64.tar.xz | awk '{print $1}')
 
 ```shell
-ACTUAL=$(<nome do arquivo baixado> | awk '{print $1}')
+ACTUAL=$(md5sum <nome do arquivo baixado> | awk '{print $1}')
 ```
 
 ```shell
@@ -151,6 +153,8 @@ Confirmar
 which mysqld
 mysqld --version
 ```
+
+## Instalar o MySQL
 
 ### Instalar o my.cnf
 
@@ -300,7 +304,7 @@ chmod 640 /mysql/log/log_mysql.err
 Ajustar dono do basedir
 
 ```shell
-chown -R mysql:mysql /mysql/mysql
+chown -R mysql:mysql /mysql/mysql-8.0.45-linux-glibc2.28-x86_64
 ```
 
 Inicializar — este comando cria o datadir, undo, redo, doublewrite  
@@ -332,14 +336,15 @@ semanage fcontext -a -t bin_t "/mysql/mysql-8.0.45-linux-glibc2.28-x86_64(/.*)?"
 restorecon -R -v /mysql/mysql-8.0.45-linux-glibc2.28-x86_64
 ```
 
-Libera os diretórios de dados/logs para o mysqld_t
+Libera os diretórios de dados/logs para o contexto mysqld_t
 
 ```shell
 semanage fcontext -a -t mysqld_db_t "/mysql/data(/.*)?"
 semanage fcontext -a -t mysqld_db_t "/mysql/innodb(/.*)?"
 semanage fcontext -a -t mysqld_log_t "/mysql/log(/.*)?"
 semanage fcontext -a -t mysqld_log_t "/mysql/audit(/.*)?"
-restorecon -R -v /mysql/data /mysql/innodb /mysql/log /mysql/audit
+semanage fcontext -a -t mysqld_db_t "/mysql/dump(/.*)?"
+restorecon -R -v /mysql/data /mysql/innodb /mysql/log /mysql/audit /mysql/dump
 ```
 
 ### Configurar o serviço systemd
@@ -357,7 +362,6 @@ Type=notify
 User=mysql
 Group=mysql
 ExecStart=/mysql/mysql/bin/mysqld --defaults-file=/etc/my.cnf
-ExecStop=/mysql/mysql/bin/mysqladmin --defaults-file=/etc/my.cnf shutdown
 TimeoutSec=600
 Restart=on-failure
 LimitNOFILE=1048576
