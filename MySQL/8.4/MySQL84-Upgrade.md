@@ -20,10 +20,12 @@ Verificar os pacotes
 dnf -y install libaio numactl-libs ncurses-compat-libs openssl
 ```
 
-### Carregar a senha se root (temporariamente)
+### Carregar a senha de root (temporariamente)
+
+Após a execução do comando, informar a senha e apertar Enter, a senha não constará no history
 
 ```shell
-senha=DBAdmin#
+read -s senha
 ```
 
 ### Verificar a versão atual em execução
@@ -104,15 +106,6 @@ BKPDATE=$(date +%F)
 mkdir -p /mysql/dump/pre-upgrade-mysql8.0-$BKPDATE
 
 tar -czf /mysql/dump/pre-upgrade-mysql8.0-$BKPDATE/pre-upgrade-mysql8.0-$BKPDATE.tar.gz \
-  /mysql/data \
-  /mysql/log \
-  /mysql/innodb \
-  /etc/my.cnf
-
-
-mkdir -p /mysql/dump/pre-upgrade-mysql8.0-$(date +%F)
-
-tar -czf /mysql/dump/pre-upgrade-mysql8.0-$(date +%F)/pre-upgrade-mysql8.0-$(date +%F).tar.gz \
   /mysql/data \
   /mysql/log \
   /mysql/innodb \
@@ -303,7 +296,7 @@ systemctl start mysqld
 Monitorar o log durante a inicialização
 
 ```shell
-tail -f /mysql/log/log_mysql.err
+tail -f -n 500 /mysql/log/log_mysql.err
 ```
 
 Aguardar as seguintes mensagens que confirmam o upgrade automático concluído:
@@ -367,9 +360,7 @@ mysqlcheck -u root -p$senha --all-databases
 
 > Todas as tabelas devem retornar `OK`.
 
----
-
-## Validação final da estrutura de arquivos
+### Validação final da estrutura de arquivos
 
 ```shell
 ls /mysql/data/               # ibdata1, mysql/, sys/, performance_schema/
@@ -378,6 +369,12 @@ ls /mysql/innodb/undo/        # deve conter undo_001, undo_002
 ls /mysql/innodb/doublewrite/ # deve conter arquivos #ib_*
 ls /mysql/innodb/temp/        # deve conter ibtmp1 e diretório #innodb_temp
 ls /mysql/log/                # deve conter log_mysql.err e mysql-bin.000001
+```
+
+### Validação de check para params deprecated e demais erros no log
+
+```shell
+mysql -u root -p$senha -e "SHOW WARNINGS"
 ```
 
 ## Pós-upgrade
@@ -397,12 +394,10 @@ rm -rf /mysql/mysql-8.0.45-linux-glibc2.28-x86_64
 
 >[!WARNING]
 >
->Limpar o histórico para eliminar a senha que foi explicitamente declarada no inicio da atualização. 
-
+>Limpar o conteudo da variavel senha para eliminar da sessão a senha que foi explicitamente declarada no inicio da atualização.
 
 ```shell
-history -d $(history 1 | awk '{print $1}')
-unset Alesc01#
+unset senha
 ```
 
 ### Rollback (se necessário antes de remover o 8.0)
