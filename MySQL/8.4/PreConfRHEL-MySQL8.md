@@ -101,26 +101,26 @@ sudo dnf -y update
 
 ### Preparar o ambiente para o permissionamento de grupo para o usuário Alescdba
 
-Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo alescdba, e o "setfacl" evita “permissão quebrada”
+Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo dbadmin, e o "setfacl" evita “permissão quebrada”
 
 ```shell
-chmod 2770 /home/alescdba
-setfacl -m g:alescdba:rwx /home/alescdba
-setfacl -d -m g:alescdba:rwx /home/alescdba
+chmod 2770 /home/dbadmin
+setfacl -m g:dbadmin:rwx /home/dbadmin
+setfacl -d -m g:dbadmin:rwx /home/dbadmin
 ```
 
-Criar o permissionamento do grupo para alescdba
+Criar o permissionamento do grupo para dbadmin
 
 ```shell
-cat <<'EOF' | tee /etc/sudoers.d/alescdba >/dev/null
-%alescdba ALL=(ALL) ALL
+cat <<'EOF' | tee /etc/sudoers.d/dbadmin >/dev/null
+%dbadmin ALL=(ALL) ALL
 EOF
 ```
 
 Ajustar as permissões minimas
 
 ```shell
-chmod 440 /etc/sudoers.d/alescdba
+chmod 440 /etc/sudoers.d/dbadmin
 ```
 
 ### Criação dos usuários administrativos
@@ -129,7 +129,7 @@ Criar o usuário
 
 ```shell
 useradd -m <usuario>
-usermod -aG alescdba <usuario>
+usermod -aG dbadmin <usuario>
 passwd <usuario>
 passwd -e <usuario>
 ```
@@ -145,35 +145,35 @@ EOF
 chmod 600 /root/.vimrc
 ```
 
-### Configurar o vim para exibir o tema desert como default para usuários DBAs logados pertencentes ao grupo alescdba (logado com o usuário administrativo)
+### Configurar o vim para exibir o tema desert como default para usuários DBAs logados pertencentes ao grupo dbadmin (logado com o usuário administrativo)
 
 ```shell
 mkdir -p /etc/vimrc.d
 
-cat > /etc/vimrc.d/alescdba.vim <<'EOF'
+cat > /etc/vimrc.d/dbadmin.vim <<'EOF'
 syntax on
 colorscheme desert
 EOF
 
-chmod 644 /etc/vimrc.d/alescdba.vim
+chmod 644 /etc/vimrc.d/dbadmin.vim
 ```
 
-### Criar o profile para aplicar padronização dos usuários pertencentes ao grupo alescdba e a aplicação do tema desert para os respectivos
+### Criar o profile para aplicar padronização dos usuários pertencentes ao grupo dbadmin e a aplicação do tema desert para os respectivos
 
 >[!IMPORTANT]
->Esse script roda no login bash e só afeta quem está no grupo alescdba.
+>Esse script roda no login bash e só afeta quem está no grupo dbadmin.
 
 ```shell
-cat > /etc/profile.d/alescdba.sh <<'EOF'
-# Aplica somente para membros do grupo alescdba
-if id -nG "$USER" | grep -qw "alescdba"; then
+cat > /etc/profile.d/dbadmin.sh <<'EOF'
+# Aplica somente para membros do grupo dbadmin
+if id -nG "$USER" | grep -qw "dbadmin"; then
   export PS1='[\u@DBA \W]\$ '
   alias ll='ls -lh'
-  export VIMINIT='source /etc/vimrc.d/alescdba.vim'
+  export VIMINIT='source /etc/vimrc.d/dbadmin.vim'
 fi
 EOF
 
-chmod 644 /etc/profile.d/alescdba.sh
+chmod 644 /etc/profile.d/dbadmin.sh
 ```
 
 ### Instalar os pacotes de aplicativos, ferramentas e utilitários opcionais
