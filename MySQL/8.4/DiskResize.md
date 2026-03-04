@@ -50,7 +50,13 @@ Saída esperada (exemplo):
 O comando abaixo é para ser usado para o rescan apenas do dispositivo SCSI (disco) expandido
 
 ```shell
-echo 1 > /sys/class/block/sdg/device/rescan
+echo 1 > /sys/block/sdg/device/rescan
+```
+
+ou
+
+```shell
+
 echo 1 > /sys/block/sdg/device/rescan
 ```
 
@@ -277,7 +283,7 @@ Tudo deve refletir o novo tamanho do disco.
 dmesg | grep sd 
 ```
 
-* pvresize falha: Confirme novo tamanho com lsblk. Se PV tem partições, utilizar growpart antes.
+* pvresize falha: Confirme novo tamanho com lsblk. Se PV tem partições, utilizar growpart/parted antes.
 
 ```shell
 lsblk
