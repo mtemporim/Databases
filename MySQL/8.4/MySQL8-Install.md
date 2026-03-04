@@ -307,7 +307,8 @@ Ajustar dono do basedir
 chown -R mysql:mysql /mysql/mysql-8.0.45-linux-glibc2.28-x86_64
 ```
 
-Inicializar — este comando cria o datadir, undo, redo, doublewrite  
+Inicializar — este comando cria o datadir, undo, redo e doublewrite  
+
 A senha temporária do root será gravada no log de erro
 
 ```shell
@@ -402,7 +403,7 @@ mysql -u root -p
 Trocar a senha temporária (obrigatório antes de qualquer outra coisa)
 
 ```sql
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'Alesc01#';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '<atribuir a senha do root do DB>';
 ```
 
 Confirmar variáveis de caminho estão corretas
@@ -425,9 +426,15 @@ SELECT TABLESPACE_NAME, FILE_NAME FROM INFORMATION_SCHEMA.FILES
 WHERE FILE_TYPE = 'UNDO LOG';
 ```
 
+### Validação de check para params deprecated e demais erros no log
+
+```sql
+SHOW WARNINGS;
+```
+
 ### Validação final da estrutura de arquivos
 
-Confirmar que os arquivos foram criados nos discos corretos
+Agora de volta no shell do SO, confirmar que os arquivos foram criados nos discos corretos
 
 ```shell
 ls /mysql/data/           # ibdata1, mysql/, sys/, performance_schema/
