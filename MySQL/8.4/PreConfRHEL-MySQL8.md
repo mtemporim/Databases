@@ -101,26 +101,26 @@ sudo dnf -y update
 
 ### Preparar o ambiente para o permissionamento de grupo para o usuário Alescdba
 
-Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo dbadmin, e o "setfacl" evita “permissão quebrada”
+Aplicar as permissões corretas, o 2 no 2770 garante que tudo criado dentro herda o grupo alescdba, e o "setfacl" evita “permissão quebrada”
 
 ```shell
-chmod 2770 /home/dbadmin
-setfacl -m g:dbadmin:rwx /home/dbadmin
-setfacl -d -m g:dbadmin:rwx /home/dbadmin
+chmod 2770 /home/alescdba
+setfacl -m g:alescdba:rwx /home/alescdba
+setfacl -d -m g:alescdba:rwx /home/alescdba
 ```
 
-Criar o permissionamento do grupo para dbadmin
+Criar o permissionamento do grupo para alescdba
 
 ```shell
-cat <<'EOF' | tee /etc/sudoers.d/dbadmin >/dev/null
-%dbadmin ALL=(ALL) ALL
+cat <<'EOF' | tee /etc/sudoers.d/alescdba >/dev/null
+%alescdba ALL=(ALL) ALL
 EOF
 ```
 
 Ajustar as permissões minimas
 
 ```shell
-chmod 440 /etc/sudoers.d/dbadmin
+chmod 440 /etc/sudoers.d/alescdba
 ```
 
 ### Criação dos usuários administrativos
@@ -129,7 +129,7 @@ Criar o usuário
 
 ```shell
 useradd -m <usuario>
-usermod -aG dbadmin <usuario>
+usermod -aG alescdba <usuario>
 passwd <usuario>
 passwd -e <usuario>
 ```
@@ -145,35 +145,35 @@ EOF
 chmod 600 /root/.vimrc
 ```
 
-### Configurar o vim para exibir o tema desert como default para usuários DBAs logados pertencentes ao grupo dbadmin (logado com o usuário administrativo)
+### Configurar o vim para exibir o tema desert como default para usuários DBAs logados pertencentes ao grupo alescdba (logado com o usuário administrativo)
 
 ```shell
 mkdir -p /etc/vimrc.d
 
-cat > /etc/vimrc.d/dbadmin.vim <<'EOF'
+cat > /etc/vimrc.d/alescdba.vim <<'EOF'
 syntax on
 colorscheme desert
 EOF
 
-chmod 644 /etc/vimrc.d/dbadmin.vim
+chmod 644 /etc/vimrc.d/alescdba.vim
 ```
 
-### Criar o profile para aplicar padronização dos usuários pertencentes ao grupo dbadmin e a aplicação do tema desert para os respectivos
+### Criar o profile para aplicar padronização dos usuários pertencentes ao grupo alescdba e a aplicação do tema desert para os respectivos
 
 >[!IMPORTANT]
->Esse script roda no login bash e só afeta quem está no grupo dbadmin.
+>Esse script roda no login bash e só afeta quem está no grupo alescdba.
 
 ```shell
-cat > /etc/profile.d/dbadmin.sh <<'EOF'
-# Aplica somente para membros do grupo dbadmin
-if id -nG "$USER" | grep -qw "dbadmin"; then
+cat > /etc/profile.d/alescdba.sh <<'EOF'
+# Aplica somente para membros do grupo alescdba
+if id -nG "$USER" | grep -qw "alescdba"; then
   export PS1='[\u@DBA \W]\$ '
   alias ll='ls -lh'
-  export VIMINIT='source /etc/vimrc.d/dbadmin.vim'
+  export VIMINIT='source /etc/vimrc.d/alescdba.vim'
 fi
 EOF
 
-chmod 644 /etc/profile.d/dbadmin.sh
+chmod 644 /etc/profile.d/alescdba.sh
 ```
 
 ### Instalar os pacotes de aplicativos, ferramentas e utilitários opcionais
@@ -335,7 +335,7 @@ timedatectl
 ### Remoção da instalação do MariaDB e MySQL nativas caso exista
 
 ```shell
-dnf -y remove mysql-community-server mariadb mariadb-connector-c-config-3.2.6-1.el9_0.noarch
+dnf -y remove mysql-community-server mariadb* 
 ```
 
 ### Adicionando os discos para o MySQL
@@ -346,7 +346,25 @@ Após atachar o disco que terá o ponto de montagem unico em /mysql/data executa
 lsblk
 ```
 
-Ele deverá paracer algo com **sdb    8:16   0 200G  0 disk**
+Ele deverá paracer algo com  
+**sdb    8:16   0 200G  0 disk**
+
+```text
+NAME                MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda                   8:0    0  200G  0 disk
+├─sda1                8:1    0    1G  0 part /boot/efi
+├─sda2                8:2    0    1G  0 part /boot
+├─sda3                8:3    0   60G  0 part
+│ └─disk1--vg3-home 253:3    0   60G  0 lvm  /home
+├─sda4                8:4    0   60G  0 part
+│ └─disk1--vg2-var  253:2    0   60G  0 lvm  /var
+├─sda5                8:5    0   16G  0 part
+│ └─disk1--vg1-swap 253:1    0   16G  0 lvm  [SWAP]
+└─sda6                8:6    0   62G  0 part
+  └─disk1--vg4-root 253:0    0   62G  0 lvm  /
+sdb                   8:16   0  200G  0 disk
+sr0                  11:0    1 1024M  0 rom
+```
 
 #### Criar o Physical Volume (PV)
 
@@ -366,12 +384,16 @@ Verificar:
 pvs
 ```
 
-Saída esperada  
-/dev/sdax......  
-.  
-.  
-.  
-**/dev/sdb   lvm2   200.00g**
+Saída esperada
+
+```text
+PV         VG        Fmt  Attr PSize   PFree
+/dev/....  .......   .... ...  .....     .
+.
+.
+.
+/dev/sdb             lvm2 ---  200.00g 200.00g
+```
 
 #### Criar o Volume Group (VG)
 
@@ -392,11 +414,15 @@ vgs
 ```
 
 Saida esperada  
-disk1-vg1  
-.  
-.  
-.  
-**disk2-vg1   1   0   0 wz--n- <200.00g <200.00g**  
+
+```text
+VG        #PV #LV #SN Attr   VSize    VFree
+disk..      .   .   . .....  ....     ....
+.
+.
+.
+disk2-vg1   1   0   0 wz--n- <200.00g <200.00g
+```
 
 #### Criar o Logical Volume (LV)
 
@@ -417,11 +443,15 @@ lvs
 ```
 
 Saída esperada  
-swap  
-.  
-.  
-.  
-mysql_data  -wi-a----- <200.00g  
+
+```text
+LV         VG        Attr       LSize    Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+swap       .....    ........... .........
+var        .....    ........... .........
+home       .....    ........... .........
+root       .....    ........... .........
+mysql_data disk2-vg1 -wi-a----- <200.00g
+```
 
 O caminho do dispositivo agora é: **/dev/disk2-vg1/mysql_data**
 
@@ -455,8 +485,12 @@ mkdir -p /mysql/data
 blkid /dev/disk2-vg1/mysql_data
 ```
 
-Saída esperada
-/dev/disk2-vg1/mysql_data: **UUID="1a095ba2-2ec2-4ef8-9268-d7334f4a7875" TYPE="xfs"**
+Saída esperada  
+
+```text
+/dev/disk2-vg1/mysql_data: UUID="a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1" TYPE="xfs"  
+```
+
 2. Editar /etc/fstab
 
 ```shell
@@ -465,7 +499,9 @@ vim /etc/fstab
 
 Adicionar:
 
-UUID=1a095ba2-2ec2-4ef8-9268-d7334f4a7875 /mysql/data  xfs  defaults,noatime  0 0
+```text
+UUID=<adicionar o UUID obtido no comando blkid> /mysql/data  xfs  defaults,noatime  0 0
+```
 
 Por que noatime?
 
@@ -474,9 +510,21 @@ Por que noatime?
 
 #### Testar o fstab (OBRIGATÓRIO)
 
+Executar o mount para testar a montagem do disco e validar a entrada adicionada no fstab
+
 ```shell
-umount /mysql/data
 mount -a
+```
+
+Saída esperada  
+
+```text
+Filesystem                        Type      Size  Used Avail Use% Mounted on
+...............................  ......    .....  ....  ....  ... ............
+.
+.
+.
+/dev/mapper/disk2--vg1-mysql_data xfs       200G  1.5G  199G   1% /mysql/data
 ```
 
 >[!NOTE]
@@ -515,66 +563,60 @@ sdg                       8:96   0   50G  0 disk
 sr0                      11:0    1 1024M  0 rom
 ```
 
-Criar os Physicals Volumes
+Dispositivo /dev/sdc será montado em /mysql/innodb
 
 ```shell
 pvcreate /dev/sdc
-pvcreate /dev/sdd
-pvcreate /dev/sde
-pvcreate /dev/sdf
-pvcreate /dev/sdg
-```
-
-Criar os Volumes Groups
-
-```shell
 vgcreate disk3-vg1 /dev/sdc
-vgcreate disk4-vg1 /dev/sdd
-vgcreate disk5-vg1 /dev/sde
-vgcreate disk6-vg1 /dev/sdf
-vgcreate disk7-vg1 /dev/sdg
-```
-
-Criar os Logicals Volumes
-
-```shell
 lvcreate -n mysql_innodb -l 100%FREE disk3-vg1
-lvcreate -n mysql_innodb_temp -l 100%FREE disk4-vg1
-lvcreate -n mysql_audit -l 100%FREE disk5-vg1
-lvcreate -n mysql_log -l 100%FREE disk6-vg1
-lvcreate -n mysql_dump -l 100%FREE disk7-vg1
-```
-
-Criar os filesystens em XFS
-
-```shell
 mkfs.xfs /dev/disk3-vg1/mysql_innodb
-mkfs.xfs /dev/disk4-vg1/mysql_innodb_temp
-mkfs.xfs /dev/disk5-vg1/mysql_audit
-mkfs.xfs /dev/disk6-vg1/mysql_log
-mkfs.xfs /dev/disk7-vg1/mysql_dump
-```
-
-Criar os diretórios para o ponto de montagem para os demais discos
-
-```shell
 mkdir -p /mysql/innodb/
-mkdir -p /mysql/audit
-mkdir -p /mysql/log
-mkdir -p /mysql/dump 
+mount /dev/disk3-vg1/mysql_innodb /mysql/innodb/
 ```
 
-Montar individualmente os discos com a observação da criação do diretório entre as as montagens para evitar erro na primeira vez
+Dispositivo /dev/sdd será montado em /mysql/innodb/temp
 
 ```shell
-mount /dev/disk3-vg1/mysql_innodb /mysql/innodb/
+pvcreate /dev/sdd
+vgcreate disk4-vg1 /dev/sdd
+lvcreate -n mysql_innodb_temp -l 100%FREE disk4-vg1
+mkfs.xfs /dev/disk4-vg1/mysql_innodb_temp
 mkdir -p /mysql/innodb/temp
 mount /dev/disk4-vg1/mysql_innodb_temp /mysql/innodb/temp
-mount /dev/disk5-vg1/mysql_audit /mysql/audit/
-mount /dev/disk6-vg1/mysql_log /mysql/log/
-mount /dev/disk7-vg1/mysql_dump /mysql/dump/
 ```
 
+Dispositivo /dev/sde será montado em /mysql/audit
+
+```shell
+pvcreate /dev/sde
+vgcreate disk5-vg1 /dev/sde
+lvcreate -n mysql_audit -l 100%FREE disk5-vg1
+mkfs.xfs /dev/disk5-vg1/mysql_audit
+mkdir -p /mysql/audit
+mount /dev/disk5-vg1/mysql_audit /mysql/audit/
+```
+
+Dispositivo /dev/sdf será montado em /mysql/log
+
+```shell
+pvcreate /dev/sdf
+vgcreate disk6-vg1 /dev/sdf
+lvcreate -n mysql_log -l 100%FREE disk6-vg1
+mkfs.xfs /dev/disk6-vg1/mysql_log
+mkdir -p /mysql/log
+mount /dev/disk6-vg1/mysql_log /mysql/log/
+```
+
+Dispositivo /dev/sdg será montado em /mysql/dump
+
+```shell
+pvcreate /dev/sdg
+vgcreate disk7-vg1 /dev/sdg
+lvcreate -n mysql_dump -l 100%FREE disk7-vg1
+mkfs.xfs /dev/disk7-vg1/mysql_dump
+mkdir -p /mysql/dump 
+mount /dev/disk7-vg1/mysql_dump /mysql/dump/
+```
 
 Persistir no /etc/fstab  
 Obter o UUID
@@ -587,7 +629,7 @@ blkid /dev/disk6-vg1/mysql_log
 blkid /dev/disk7-vg1/mysql_dump
 ```
 
-Montar as entradas, editar o fstab e adicionar
+Montar as entradas, editar o fstab e adiciona-las
 
 ```shell
 vim /etc/fstab
