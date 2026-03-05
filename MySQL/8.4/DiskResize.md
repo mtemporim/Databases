@@ -1,4 +1,4 @@
-# Extensão de disco LVM após aumento no vCenter
+# Extensão de disco LVM após aumento no vCenter para discos com partição unica
 
 *(Exemplo: disco de dump `/mysql/dump` – `sdg`)*
 
