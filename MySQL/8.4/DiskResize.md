@@ -294,3 +294,317 @@ lsblk
 ```shell
 df -hT
 ```
+
+## Extensão de disco LVM após aumento no vCenter para discos com mais de uma partição
+
+### Verificar o tamanho atual do disco antes do rescan
+
+```shell
+lsblk
+```
+
+Saída esperada — o SO ainda enxerga o tamanho antigo (ex.: 500G):
+
+```text
+sdb                          8:16   0  500G  0 disk
+└─sdb1                       8:17   0  498G  0 part
+  ├─Disk2-mysql_3307_data  252:4    0  249G  0 lvm  /mysql/3307/data
+  └─Disk2-mysql_3306_data  252:6    0  249G  0 lvm  /mysql/3306/data
+```
+
+### Forçar o rescan do barramento SCSI para o SO reconhecer o novo tamanho
+
+Identificar o número do host SCSI associado ao disco
+
+```shell
+ls /sys/class/scsi_disk/
+```
+
+Saída esperada (exemplo):
+
+```text
+0:0:0:0  0:0:1:0  0:0:2:0  0:0:3:0  0:0:4:0
+```
+
+O comando abaixo é para ser usado para o rescan apenas do dispositivo SCSI (disco) expandido
+
+```shell
+echo 1 > /sys/block/sdb/device/rescan
+```
+
+>[!NOTE]
+>Alternativamente, é possível fazer o rescan de todos os hosts de uma só vez com o comando abaixo:
+
+```shell
+for host in /sys/class/scsi_host/host*/scan; do
+  echo "- - -" > $host
+done
+```
+
+Ou se preferir, poderá executar o rescan para cada host listado
+
+>[!WARNING]
+>
+>Esse comando só deverá ser executado após o levantamento do endereço SCSI pelo comando **ls /sys/class/scsi_disk/**
+
+```shell
+echo 1 > /sys/class/scsi_disk/0\:0\:0\:0/device/rescan
+echo 1 > /sys/class/scsi_disk/0\:0\:1\:0/device/rescan
+echo 1 > /sys/class/scsi_disk/0\:0\:2\:0/device/rescan
+echo 1 > /sys/class/scsi_disk/0\:0\:3\:0/device/rescan
+echo 1 > /sys/class/scsi_disk/0\:0\:4\:0/device/rescan
+```
+
+Verificar se o SO passou a enxergar o novo tamanho do disco
+
+```shell
+lsblk
+```
+
+O disco **sdb** deverá refletir o novo tamanho (ex.: 600G), porém a partição sdb1 ainda estará no tamanho original
+
+```text
+sdb                          8:16   0  600G  0 disk
+└─sdb1                       8:17   0  498G  0 part
+  ├─Disk2-mysql_3307_data  252:4    0  249G  0 lvm  /mysql/3307/data
+  └─Disk2-mysql_3306_data  252:6    0  249G  0 lvm  /mysql/3306/data
+```
+
+>[!NOTE]
+>Neste momento o LV ainda exibe o tamanho antigo. Os passos seguintes irão propagá-lo até o filesystem.
+
+Verificar a partição atual
+
+```shell
+parted /dev/sdb print
+```
+
+Saída esperada
+
+```text
+Number  Start   End    Size   Type     File system  Flags
+ 1      1049kB  535GB  535GB  primary               lvm
+```
+
+### Expandir a partição com parted
+
+```shell
+parted /dev/sdb
+```
+
+Dentro do parted, execute:
+
+```shell
+(parted) print                  # veja o número da partição e o fim do disco
+(parted) resizepart 1 100%      # expande a partição 1 até o fim do disco
+(parted) quit                   # sair do parted 
+```
+
+Verificar se o resize foi realizado
+
+```shell
+parted /dev/sdb print
+```
+
+```text
+Number  Start   End    Size   Type     File system  Flags
+ 1      1049kB  644GB  644GB  primary               lvm
+```
+
+Nesse momento o lsblk ja consegue exibir os valores de disco e partição com o novo tamanho
+
+Verificar se o SO passou a enxergar o novo tamanho do disco para a partição também
+
+```shell
+lsblk
+```
+
+O disco **sdb** deverá refletir o novo tamanho (ex.: 600G), e a partição sdb1 também
+
+```text
+sdb                          8:16   0  600G  0 disk
+└─sdb1                       8:17   0  600G  0 part
+  ├─Disk2-mysql_3307_data  252:4    0  249G  0 lvm  /mysql/3307/data
+  └─Disk2-mysql_3306_data  252:6    0  249G  0 lvm  /mysql/3306/data
+```
+
+### Verificação da propagação para PV, VG e LV
+
+Executar os comandos para validar o ajuste de tamanho
+
+Verificar os Physical Volume (PV)
+
+```shell
+pvs
+```
+
+Saida esperada
+
+```shell
+PV         VG    Fmt  Attr PSize   PFree
+.........  ..... .... ...  ....... .....
+/dev/sdb1  Disk2 lvm2 a--  498.00g 4.00m
+.........  ..... .... ...  ....... .....
+.........  ..... .... ...  ....... .....
+```
+
+Verificar os Volume Group (VG)
+
+```shell
+vgs
+```
+
+Saida esperada
+
+```shell
+VG    #PV #LV #SN Attr   VSize   VFree
+.....   .   .   . ...... ....... .....
+Disk2   1   2   0 wz--n- 498.00g 4.00m
+.....   .   .   . ...... ....... .....
+.....   .   .   . ...... ....... .....
+```
+
+Verificar os Logical Voluma (LV)
+
+```shell
+lvs
+```
+
+Saida esperada
+
+```shell
+LV               VG    Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+...............  ..... .......... .......
+mysql_3306_data  Disk2 -wi-ao---- 249.00g
+...............  ..... .......... .......
+...............  ..... .......... .......
+```
+
+### Informar o kernel sobre a mudança (sem reboot)
+
+```shell
+partprobe /dev/sdb
+```
+
+ou se não funcionar:
+
+```shell
+kpartx -u /dev/sdb
+```
+
+### Redimensionar o Physical Volume
+
+Verificar o PV
+
+```shell
+pvresize /dev/sdb1
+```
+
+Saida esperada
+
+```shell
+PV         VG    Fmt  Attr PSize   PFree
+.........  ..... .... ...  ....... .....
+/dev/sdb1  Disk2 lvm2 a--   <600.00g 101.99g
+.........  ..... .... ...  ....... .....
+.........  ..... .... ...  ....... .....
+```
+
+Verificar o VG
+
+```shell
+vgs
+```
+
+Saida esperada
+
+```shell
+VG    #PV #LV #SN Attr   VSize   VFree
+.....   .   .   . ...... ....... .....
+Disk2   1   2   0 wz--n- <600.00g 101.99g
+.....   .   .   . ...... ....... .....
+.....   .   .   . ...... ....... .....
+```
+
+### Expandir o Logical Volume
+
+Ver o nome exato do VG
+
+```shell
+vgs
+```
+
+Expandir usando todo espaço livre
+
+Exemplo lvextend -l +100%FREE /dev/<VG_NAME>/<LV_NAME>
+
+```shell
+lvextend -l +100%FREE /dev/Disk2/mysql_3306_data
+```
+
+Verificar o novo tamanho do LV
+
+```shell
+lvs
+```
+
+Saida esperada
+
+```shell
+LV               VG    Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+...............  ..... .......... .......
+mysql_3306_data  Disk2 -wi-ao---- <351.00g
+...............  ..... .......... .......
+...............  ..... .......... .......
+```
+
+### Expandir no filesystem (online)
+
+Verificar tipo do FS
+
+```shell
+df -Th /mysql/3306/data
+```
+
+```text
+Filesystem                         Type      Size  Used Avail Use% Mounted on
+.................................  .......   ....  ....  ....  ... .................
+/dev/mapper/Disk2-mysql_3306_data  xfs       249G  249G   78M 100% /mysql/3306/data
+.................................  .......   ....  ....  ....  ... .................
+.................................  .......   ....  ....  ....  ... .................
+```
+
+Se XFS:
+
+```shell
+xfs_growfs /mysql/3306/data
+```
+
+Saida esperada
+
+```shell
+meta-data=/dev/mapper/Disk2-mysql_3306_data isize=512    agcount=4, agsize=16318464 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=0
+         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
+data     =                       bsize=4096   blocks=65273856, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=31872, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+data blocks changed from 65273856 to 92011520
+```
+
+Se EXT4:
+
+```shell
+resize2fs /dev/<VG_NAME>/Disk2-mysql_3306_data
+```
+
+### Validar
+
+```shell
+df -h /mysql/3306/data
+pvs && lvs
+```
