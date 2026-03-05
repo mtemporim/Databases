@@ -3,7 +3,7 @@
 *(Exemplo: disco de dump `/mysql/dump` – `sdg`)*
 
 >[!IMPORTANT]
->Esse procedimento deve ser executado **após** o disco ter sido aumentado no vCenter (ou hypervisor equivalente). Nenhuma reinicialização do servidor é necessária.
+>Esse procedimento deve ser executado **após** o disco ter sido aumentado no vMWare (ou hypervisor equivalente). Nenhuma reinicialização do servidor é necessária.
 
 O exemplo abaixo utiliza o disco **sdg** (`/mysql/dump`) com o Volume Group **disk7-vg1** e o Logical Volume **mysql_dump**, porém o procedimento é idêntico para qualquer disco da arquitetura. Basta substituir os nomes conforme a tabela de referência ao final.
 
